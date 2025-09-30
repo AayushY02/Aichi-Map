@@ -10,7 +10,9 @@ const LYR_OTHER = "bus-routes-other";
 const LYR_HILITE = "bus-routes-highlighted";
 
 // ⚠️ Put your file at: public/data/bus_routes_linked_p11.geojson
-const DATA_URL = blobUrl("bus_routes_linked_p11.geojson");
+// const DATA_URL = blobUrl("bus_routes_linked_p11.geojson");
+const DATA_URL = "/data/bus_route.geojson";
+
 
 // Colors (feel free to adjust)
 const COLOR_MATCHED = "#DB3A34"; // red-ish

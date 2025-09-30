@@ -9,7 +9,7 @@ export const toggleKashiwaMaskLayer = (
   setIsLoading(true);
 
   const sourceId = 'kashiwa-boundary';
-  const geojsonPath = '/data/kashiwa_boundary.geojson';
+  const geojsonPath = '/data/boundary.geojson';
 
   if (!kashiwaMaskVisible) {
     // Add source if not present

@@ -16,7 +16,7 @@ const LYR_OUTLINE = "kashiwa-subdiv-outline";
 const LYR_LABELS = "kashiwa-subdiv-labels";
 
 // Put your data at: public/data/kashiwa_partition.geojson
-const DATA_URL = "/data/kashiwa_partition.geojson";
+const DATA_URL = "/data/administration_aichi.geojson";
 
 /* -------------------- Geometry helpers (for label points) -------------------- */
 // WebMercator helpers (approx) to compute area/centroid reliably in meters

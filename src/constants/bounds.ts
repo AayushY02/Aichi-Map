@@ -10,7 +10,15 @@ export const CHIBA_BOUNDS: maplibregl.LngLatBoundsLike = [
 ];
 
 
-export const KASHIWA_BOUNDS: maplibregl.LngLatBoundsLike = [
-  [139.80, 35.75],
-  [140.20, 36.00]
+export const NAGAKUTE_BOUNDS: maplibregl.LngLatBoundsLike = [
+  // Nagakute City (Aichi) approx bounds
+  [137.00, 35.15],
+  [137.12, 35.23]
+];
+
+// Approximate bounding box for Aichi Prefecture
+// Southwest corner to Northeast corner (covers Nagoya and surrounding area)
+export const AICHI_BOUNDS: maplibregl.LngLatBoundsLike = [
+  [136.60, 34.55],
+  [137.85, 35.45]
 ];

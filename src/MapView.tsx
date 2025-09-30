@@ -7,7 +7,7 @@ import './App.css';
 import { Card } from './components/ui/card';
 import 'ldrs/react/Grid.css';
 import { MAP_STYLES } from './constants/mapStyles';
-import { JAPAN_BOUNDS, CHIBA_BOUNDS, KASHIWA_BOUNDS } from './constants/bounds';
+import { JAPAN_BOUNDS, CHIBA_BOUNDS, NAGAKUTE_BOUNDS, AICHI_BOUNDS } from './constants/bounds';
 import { getColorExpression } from './utils/expressions';
 import { addMeshLayers } from './layers/meshLayers';
 import { toggleAdminBoundaries } from './layers/adminBoundaries';
@@ -71,6 +71,50 @@ import { buildMeshForBounds, coverBox } from './lib/mesh250';
 import { AskAiToolbar } from './components/AskAiToolbar';
 // mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
+const FACILITIES_URL = "/data/kashiwa_public_facilities_new.geojson";
+const SHOPS_URL = "/data/kashiwa_shops.geojson";
+
+// Optional: if your generated filenames are different, just change the strings above.
+// e.g. "/data/kashiwa_public_facilities.from_csv.no_duplicated_firstcol.name_fixed.geojson"
+//      "/data/kashiwa_shops.from_csv.structured_with_legend_no.geojson"
+
+type FC = GeoJSON.FeatureCollection<GeoJSON.Geometry, Record<string, any>>;
+
+function rowsFromFC_FACILITIES(fc?: FC): LegendRow[] {
+    if (!fc || !Array.isArray(fc.features)) return [];
+    return fc.features.map((f) => {
+        const p = f?.properties ?? {};
+        const name =
+            p["施設名"] ??
+            p["名前"] ??
+            p["店舗名"] ??
+            p["name"] ??
+            "";
+        return {
+            group: p["リスト表示用カテゴリ"] ?? "",
+            no: p["NO"] ?? p["No"] ?? p["no"] ?? "",
+            name,
+        } as LegendRow;
+    }).filter(r => r.group || r.no || r.name);
+}
+
+function rowsFromFC_SHOPS(fc?: FC): LegendRow[] {
+    if (!fc || !Array.isArray(fc.features)) return [];
+    return fc.features.map((f) => {
+        const p = f?.properties ?? {};
+        const name =
+            p["施設名"] ??
+            p["名前"] ??
+            p["店舗名"] ??
+            p["name"] ??
+            "";
+        return {
+            group: p["凡例グループ"] ?? "",
+            no: p["NO"] ?? p["No"] ?? p["no"] ?? "",
+            name,
+        } as LegendRow;
+    }).filter(r => r.group || r.no || r.name);
+}
 
 export default function MapView() {
     const mapRef = useRef<Map | null>(null);
@@ -88,7 +132,7 @@ export default function MapView() {
     const [agriLayerVisible, setAgriLayerVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const setSelectedMeshId = useSetRecoilState(selectedMeshIdState);
-    const [chatMeshRef, setChatMeshRef] = useState<{ level: "1km" | "500m" | "250m"; id: string } | null>(null); // NEW
+    const [chatMeshRef, setChatMeshRef] = useState<{ level: "250m"; id: string } | null>(null); // NEW
     const selectionPopupRef = useRef<maplibregl.Popup | null>(null);
     const [transportVisible, setTransportVisible] = useState(false);
     const [pbFacilityVisible, setPbFacilityVisible] = useState(false);
@@ -365,11 +409,11 @@ export default function MapView() {
         applyMeshVisibility(meshVisible);
     }, [applyMeshVisibility, getMeshLayerIds, meshVisible, selectedMetric]);
 
-    useEffect(() => {
-        if (mapRef.current && kashiwaFacilityLabelsVisible) {
-            updateKashiwaPublicFacilityLabelsFilter(mapRef.current, selectedCategories);
-        }
-    }, [selectedCategories, kashiwaFacilityLabelsVisible]);
+    // useEffect(() => {
+    //     if (mapRef.current && kashiwaFacilityLabelsVisible) {
+    //         updateKashiwaPublicFacilityLabelsFilter(mapRef.current, selectedCategories);
+    //     }
+    // }, [selectedCategories, kashiwaFacilityLabelsVisible]);
 
     const onToggleFacilityLabels = () => {
         if (!mapRef.current) return;
@@ -396,12 +440,12 @@ export default function MapView() {
     };
 
     // keep label filter synced with category filter changes
-    useEffect(() => {
-        if (!mapRef.current) return;
-        if (kashiwaShopsLabelsVisible) {
-            updateKashiwaShopsLabelsFilter(mapRef.current, selectedShopCategories);
-        }
-    }, [selectedShopCategories, kashiwaShopsLabelsVisible]);
+    // useEffect(() => {
+    //     if (!mapRef.current) return;
+    //     if (kashiwaShopsLabelsVisible) {
+    //         updateKashiwaShopsLabelsFilter(mapRef.current, selectedShopCategories);
+    //     }
+    // }, [selectedShopCategories, kashiwaShopsLabelsVisible]);
 
     const toggleMesh = () => {
         const map = mapRef.current;
@@ -667,95 +711,95 @@ export default function MapView() {
         }
     }, [selectedCategories]);
 
-    useEffect(() => {
-        if (mapRef.current) {
-            toggleKashiwaShopsLayer(mapRef.current, kashiwaShopsVisible, setIsLoading, setKashiwaShopsVisible, selectedShopCategories);
-        }
-    }, [selectedShopCategories]);
+    // useEffect(() => {
+    //     if (mapRef.current) {
+    //         toggleKashiwaShopsLayer(mapRef.current, kashiwaShopsVisible, setIsLoading, setKashiwaShopsVisible, selectedShopCategories);
+    //     }
+    // }, [selectedShopCategories]);
 
-    useEffect(() => {
-        const map = mapRef.current;
-        if (!map) return;
+    // useEffect(() => {
+    //     const map = mapRef.current;
+    //     if (!map) return;
 
-        // circle layers that must sit above routes
-        const CIRCLE_IDS = [
-            "sakae-course-ride",
-            "sakae-course-drop",
-            "masuo-course-ride",
-            "masuo-course-drop",
-            "shonan-course-ride",
-            "shonan-course-drop",
-            "wani-outbound-ride",
-            "wani-outbound-drop",
-            "wani-return-ride",
-            "wani-return-drop",
-            // optionally:
-            "bus-layer",
-        ] as const;
+    //     // circle layers that must sit above routes
+    //     const CIRCLE_IDS = [
+    //         "sakae-course-ride",
+    //         "sakae-course-drop",
+    //         "masuo-course-ride",
+    //         "masuo-course-drop",
+    //         "shonan-course-ride",
+    //         "shonan-course-drop",
+    //         "wani-outbound-ride",
+    //         "wani-outbound-drop",
+    //         "wani-return-ride",
+    //         "wani-return-drop",
+    //         // optionally:
+    //         "bus-layer",
+    //     ] as const;
 
-        // Internal trackers stored on the map instance (persist through re-renders)
-        const M = map as any;
-        if (!M.__circleBump) {
-            M.__circleBump = {
-                bumped: new Set<string>(),
-                lastLayerCount: -1,
-                bumpAll: () => {
-                    // move every existing circle to the very top (order in CIRCLE_IDS decides final top order)
-                    for (const id of CIRCLE_IDS) {
-                        if (map.getLayer(id)) {
-                            try { map.moveLayer(id); } catch { }
-                        }
-                    }
-                },
-                bumpNewOnes: () => {
-                    // only move circles we haven't bumped yet (cheap)
-                    for (const id of CIRCLE_IDS) {
-                        if (map.getLayer(id) && !M.__circleBump.bumped.has(id)) {
-                            try { map.moveLayer(id); } catch { }
-                            M.__circleBump.bumped.add(id);
-                        }
-                    }
-                }
-            };
-        }
+    //     // Internal trackers stored on the map instance (persist through re-renders)
+    //     const M = map as any;
+    //     if (!M.__circleBump) {
+    //         M.__circleBump = {
+    //             bumped: new Set<string>(),
+    //             lastLayerCount: -1,
+    //             bumpAll: () => {
+    //                 // move every existing circle to the very top (order in CIRCLE_IDS decides final top order)
+    //                 for (const id of CIRCLE_IDS) {
+    //                     if (map.getLayer(id)) {
+    //                         try { map.moveLayer(id); } catch { }
+    //                     }
+    //                 }
+    //             },
+    //             bumpNewOnes: () => {
+    //                 // only move circles we haven't bumped yet (cheap)
+    //                 for (const id of CIRCLE_IDS) {
+    //                     if (map.getLayer(id) && !M.__circleBump.bumped.has(id)) {
+    //                         try { map.moveLayer(id); } catch { }
+    //                         M.__circleBump.bumped.add(id);
+    //                     }
+    //                 }
+    //             }
+    //         };
+    //     }
 
-        // run once now
-        M.__circleBump.bumpNewOnes();
+    //     // run once now
+    //     M.__circleBump.bumpNewOnes();
 
-        // When the style definition itself changes (style reload),
-        // reset our cache so we bump once again for newly recreated layers.
-        const onStyleData = (e: any) => {
-            if (e?.dataType === "style") {
-                M.__circleBump.bumped.clear();
-                M.__circleBump.lastLayerCount = -1;
-            }
-        };
+    //     // When the style definition itself changes (style reload),
+    //     // reset our cache so we bump once again for newly recreated layers.
+    //     const onStyleData = (e: any) => {
+    //         if (e?.dataType === "style") {
+    //             M.__circleBump.bumped.clear();
+    //             M.__circleBump.lastLayerCount = -1;
+    //         }
+    //     };
 
-        // On idle, only bump if the layer count changed since last time.
-        const onIdle = () => {
-            const layers = map.getStyle()?.layers ?? [];
-            const count = layers.length;
-            if (count !== M.__circleBump.lastLayerCount) {
-                // Layer stack changed (someone added/removed a layer)
-                M.__circleBump.lastLayerCount = count;
+    //     // On idle, only bump if the layer count changed since last time.
+    //     const onIdle = () => {
+    //         const layers = map.getStyle()?.layers ?? [];
+    //         const count = layers.length;
+    //         if (count !== M.__circleBump.lastLayerCount) {
+    //             // Layer stack changed (someone added/removed a layer)
+    //             M.__circleBump.lastLayerCount = count;
 
-                // Bring any newly seen circle to top once
-                M.__circleBump.bumpNewOnes();
+    //             // Bring any newly seen circle to top once
+    //             M.__circleBump.bumpNewOnes();
 
-                // Also reassert circle top order once after any stack change,
-                // so circles remain above any newly added route lines.
-                M.__circleBump.bumpAll();
-            }
-        };
+    //             // Also reassert circle top order once after any stack change,
+    //             // so circles remain above any newly added route lines.
+    //             M.__circleBump.bumpAll();
+    //         }
+    //     };
 
-        map.on("styledata", onStyleData);
-        map.on("idle", onIdle);
+    //     map.on("styledata", onStyleData);
+    //     map.on("idle", onIdle);
 
-        return () => {
-            map.off("styledata", onStyleData);
-            map.off("idle", onIdle);
-        };
-    }, []);
+    //     return () => {
+    //         map.off("styledata", onStyleData);
+    //         map.off("idle", onIdle);
+    //     };
+    // }, []);
 
     // const ROAD_LAYER_IDS = [
     //     'road', 'road-street', 'road-street-low', 'road-secondary-tertiary',
@@ -835,13 +879,13 @@ export default function MapView() {
         if (!map) return;
         const color = getColorExpression(selectedMetric);
 
-        ['mesh-1km-fill', 'mesh-500m-fill', 'mesh-250m-fill'].forEach(id => {
+        ['mesh-250m-fill'].forEach(id => {
             if (map.getLayer(id)) {
                 map.setPaintProperty(id, 'fill-color', color);
             }
         });
 
-        ['mesh-1km-outline', 'mesh-500m-outline', 'mesh-250m-outline'].forEach(id => {
+        ['mesh-250m-outline'].forEach(id => {
             if (map.getLayer(id)) {
                 map.setPaintProperty(id, 'line-color', color);
             }
@@ -858,7 +902,7 @@ export default function MapView() {
         const map = mapRef.current;
         if (!map) return;
 
-        const target = !isKashiwaBounds ? KASHIWA_BOUNDS : CHIBA_BOUNDS;
+        const target = !isKashiwaBounds ? NAGAKUTE_BOUNDS : AICHI_BOUNDS;
         fitAndClamp(map, target, true);
 
         setIsKashiwaBounds(!isKashiwaBounds);
@@ -1072,9 +1116,9 @@ export default function MapView() {
         });
     }
 
-    function meshLevelFromLayerId(id: string): "1km" | "500m" | "250m" | null {
-        if (id.includes("1km")) return "1km";
-        if (id.includes("500m")) return "500m";
+    function meshLevelFromLayerId(id: string): "250m" | null {
+        // if (id.includes("1km")) return "1km";
+        // if (id.includes("500m")) return "500m";
         if (id.includes("250m")) return "250m";
         return null;
     }
@@ -1089,7 +1133,7 @@ export default function MapView() {
 
     useEffect(() => {
         const handleAskMirai = (e: Event) => {
-            const detail = (e as CustomEvent).detail as { meshId: string; meshLevel: "1km" | "500m" | "250m" };
+            const detail = (e as CustomEvent).detail as { meshId: string; meshLevel: "250m" };
             if (!detail?.meshId || !detail?.meshLevel) return;
             setChatMeshRef({ id: detail.meshId, level: detail.meshLevel });   // NEW
             setChatOpen(true);
@@ -1222,7 +1266,7 @@ export default function MapView() {
         map.on('load', () => {
 
             map.once('idle', () => {
-                fitAndClamp(map, CHIBA_BOUNDS, true);
+                fitAndClamp(map, AICHI_BOUNDS, true);
             });
 
             map.getStyle().layers?.forEach(layer => {
@@ -1328,74 +1372,74 @@ export default function MapView() {
         //     });
         // });
 
-    //     ['mesh-500m-fill', 'mesh-1km-fill', 'mesh-250m-fill'].forEach(layer => {
-    //         map.on('click', layer, e => {
-    //             const feature = e.features?.[0];
-    //             if (!feature) return;
+        //     ['mesh-500m-fill', 'mesh-1km-fill', 'mesh-250m-fill'].forEach(layer => {
+        //         map.on('click', layer, e => {
+        //             const feature = e.features?.[0];
+        //             if (!feature) return;
 
-    //             const meshId = feature.properties?.MESH_ID as string | undefined;
-    //             if (!meshId) return;
+        //             const meshId = feature.properties?.MESH_ID as string | undefined;
+        //             if (!meshId) return;
 
-    //             const meshLevel = meshLevelFromLayerId(feature.layer.id!);
-    //             if (!meshLevel) return;
+        //             const meshLevel = meshLevelFromLayerId(feature.layer.id!);
+        //             if (!meshLevel) return;
 
-    //             // 1️⃣ Update global state (Recoil)
-    //             setSelectedMeshId(meshId);
+        //             // 1️⃣ Update global state (Recoil)
+        //             setSelectedMeshId(meshId);
 
-    //             // 2️⃣ Highlight the clicked mesh
-    //             ensureHighlightLayer();
-    //             const geojson: GeoJSON.FeatureCollection = {
-    //                 type: 'FeatureCollection',
-    //                 features: [
-    //                     {
-    //                         ...(feature.toJSON ? feature.toJSON() : (feature as any)),
-    //                         id: meshId,
-    //                     },
-    //                 ],
-    //             };
-    //             (map.getSource('clicked-mesh') as maplibregl.GeoJSONSource).setData(geojson);
+        //             // 2️⃣ Highlight the clicked mesh
+        //             ensureHighlightLayer();
+        //             const geojson: GeoJSON.FeatureCollection = {
+        //                 type: 'FeatureCollection',
+        //                 features: [
+        //                     {
+        //                         ...(feature.toJSON ? feature.toJSON() : (feature as any)),
+        //                         id: meshId,
+        //                     },
+        //                 ],
+        //             };
+        //             (map.getSource('clicked-mesh') as maplibregl.GeoJSONSource).setData(geojson);
 
-    //             // 3️⃣ Show / update the *selection* popup with the "Ask Mirai AI" button
-    //             if (selectionPopupRef.current) {
-    //                 selectionPopupRef.current.remove();
-    //             }
+        //             // 3️⃣ Show / update the *selection* popup with the "Ask Mirai AI" button
+        //             if (selectionPopupRef.current) {
+        //                 selectionPopupRef.current.remove();
+        //             }
 
-    //             const selectionPopup = new maplibregl.Popup({ closeButton: false, offset: 0, className: "ai-popup" })
-    //                 .setLngLat(e.lngLat)
-    //                 .setHTML(
-    //                     `
-    //                     <div class="rounded-xl border bg-white p-4 shadow-xl space-y-2 w-40">
-    //   <div class="text-sm font-semibold text-gray-900">Mesh ID : <span class="text-base text-muted-foreground">${meshId}</span> </div>
-      
-    //   <button
-    //     id="ask-mirai-btn"
-    //     class="inline-flex items-center w-full justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus:outline-none"
-    //   >
-    //    ミライに聞く
-    //   </button>
-    // </div>
-    //                     `,
-    //                 )
-    //                 .addTo(map);
+        //             const selectionPopup = new maplibregl.Popup({ closeButton: false, offset: 0, className: "ai-popup" })
+        //                 .setLngLat(e.lngLat)
+        //                 .setHTML(
+        //                     `
+        //                     <div class="rounded-xl border bg-white p-4 shadow-xl space-y-2 w-40">
+        //   <div class="text-sm font-semibold text-gray-900">Mesh ID : <span class="text-base text-muted-foreground">${meshId}</span> </div>
 
-    //             selectionPopupRef.current = selectionPopup;
+        //   <button
+        //     id="ask-mirai-btn"
+        //     class="inline-flex items-center w-full justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus:outline-none"
+        //   >
+        //    ミライに聞く
+        //   </button>
+        // </div>
+        //                     `,
+        //                 )
+        //                 .addTo(map);
 
-    //             // Optional: wire up an event handler for the button
-    //             const popupElement = selectionPopup.getElement();
-    //             const askBtn = popupElement?.querySelector<HTMLButtonElement>('#ask-mirai-btn');
+        //             selectionPopupRef.current = selectionPopup;
 
-    //             askBtn?.addEventListener('click', () => {
-    //                 window.dispatchEvent(
-    //                     new CustomEvent('mirai:ask', {
-    //                         detail: { meshId, meshLevel },
-    //                     }),
-    //                 );
-    //                 // optionally close popup
-    //                 selectionPopupRef.current?.remove();
-    //             });
+        //             // Optional: wire up an event handler for the button
+        //             const popupElement = selectionPopup.getElement();
+        //             const askBtn = popupElement?.querySelector<HTMLButtonElement>('#ask-mirai-btn');
 
-    //         });
-    //     });
+        //             askBtn?.addEventListener('click', () => {
+        //                 window.dispatchEvent(
+        //                     new CustomEvent('mirai:ask', {
+        //                         detail: { meshId, meshLevel },
+        //                     }),
+        //                 );
+        //                 // optionally close popup
+        //                 selectionPopupRef.current?.remove();
+        //             });
+
+        //         });
+        //     });
 
         /**
          * ===== Extra interactions for agricultural layer =====
@@ -2207,23 +2251,23 @@ export default function MapView() {
         };
     }, []);
 
-    useEffect(() => {
-        let alive = true;
-        (async () => {
-            try {
-                const [f1, f2] = await Promise.all([
-                    fetch(FACILITIES_URL).then(r => r.json()),
-                    fetch(SHOPS_URL).then(r => r.json()),
-                ]);
-                if (!alive) return;
-                setFacilityFC(f1);
-                setShopFC(f2);
-            } catch (e) {
-                console.error("Failed loading public/data GeoJSONs:", e);
-            }
-        })();
-        return () => { alive = false; };
-    }, []);
+    // useEffect(() => {
+    //     let alive = true;
+    //     (async () => {
+    //         try {
+    //             const [f1, f2] = await Promise.all([
+    //                 fetch(FACILITIES_URL).then(r => r.json()),
+    //                 fetch(SHOPS_URL).then(r => r.json()),
+    //             ]);
+    //             if (!alive) return;
+    //             setFacilityFC(f1);
+    //             setShopFC(f2);
+    //         } catch (e) {
+    //             console.error("Failed loading public/data GeoJSONs:", e);
+    //         }
+    //     })();
+    //     return () => { alive = false; };
+    // }, []);
 
     const facilityLegendRows = useMemo(() => rowsFromFC_FACILITIES(facilityFC ?? undefined), [facilityFC]);
     const shopLegendRows = useMemo(() => rowsFromFC_SHOPS(shopFC ?? undefined), [shopFC]);

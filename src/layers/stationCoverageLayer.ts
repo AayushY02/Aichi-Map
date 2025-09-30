@@ -18,8 +18,8 @@ let __indiBuffersCache: Record<string, FeatureCollection<Polygon | MultiPolygon>
 let __mergedCache: Record<string, FeatureCollection<Polygon | MultiPolygon>> = {};
 
 /** Data URL */
-// const STATIONS_URL = "/data/railway_station.geojson";
-const STATIONS_URL = blobUrl("railway_station.geojson");
+const STATIONS_URL = "/data/railway_station.geojson";
+// const STATIONS_URL = blobUrl("railway_station.geojson");
 
 /** IDs (mirrors bus layer naming) */
 const IDS = {

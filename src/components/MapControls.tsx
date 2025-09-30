@@ -788,13 +788,13 @@ export default function MapControls({
                             {terrainEnabled ? '3D地形を無効化' : '3D地形を有効化'}
                         </Button>
 
-                        <Button onClick={() => handleLayerToggle('道路', roadsVisible, toggleRoads)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer">
+                        {/* <Button onClick={() => handleLayerToggle('道路', roadsVisible, toggleRoads)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer">
                             <Ruler size={16} />
                             {roadsVisible ? '道路を非表示' : '道路を表示'}
-                        </Button>
+                        </Button> */}
                         <Button onClick={() => handleLayerToggle('行政界', adminVisible, toggleAdmin)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer"><Layers />{adminVisible ? '行政界を非表示' : '行政界を表示'}</Button>
                         {/* <Button onClick={() => handleLayerToggle('地形', terrainEnabled, toggleTerrain)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer"><Mountain />{terrainEnabled ? '地形を非表示' : '地形を表示'}</Button> */}
-                        <Button onClick={() => handleLayerToggle('農業レイヤー', agriLayerVisible, toggleAgri)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer"><Landmark />{agriLayerVisible ? '農業レイヤーを非表示' : '農業レイヤーを表示'}</Button>
+                        {/* <Button onClick={() => handleLayerToggle('農業レイヤー', agriLayerVisible, toggleAgri)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer"><Landmark />{agriLayerVisible ? '農業レイヤーを非表示' : '農業レイヤーを表示'}</Button> */}
 
                         {/* Transport Accordion */}
                         <Accordion type="single" collapsible className="w-full">
@@ -806,40 +806,40 @@ export default function MapControls({
                                     {[
                                         { label: '交通レイヤー', checked: transportVisible, onChange: () => handleLayerToggle('交通レイヤー', transportVisible, toggleTransport), icon: <Bus size={16} /> },
                                         { label: 'バス停', checked: busStopsVisible, onChange: () => handleLayerToggle('バス停', busStopsVisible, toggleBusStops), icon: <MapPin size={16} /> },
-                                        { label: 'カシワニクル乗降場', checked: busPickDropLayerVisible, onChange: () => handleLayerToggle('カシワニクル乗降場', busPickDropLayerVisible, toggleBusPickDropLayerVisible), icon: <Users size={16} /> },
+                                        // { label: 'カシワニクル乗降場', checked: busPickDropLayerVisible, onChange: () => handleLayerToggle('カシワニクル乗降場', busPickDropLayerVisible, toggleBusPickDropLayerVisible), icon: <Users size={16} /> },
                                         // { label: 'バス乗降データ', checked: busPassengerLayerVisible, onChange: () => handleLayerToggle('バス乗降データ', busPassengerLayerVisible, toggleBusPassengerLayerVisible), icon: <Users size={16} /> }
                                         // { label: '降車データ', checked: alightingVisible, onChange: toggleAlighting, icon: <Users size={16} /> },
 
-                                        {
-                                            label: '路線（共通コード＋始終点あり）',
-                                            checked: busRoutesCommonVisible,
-                                            onChange: () => handleLayerToggle(
-                                                '路線（共通コード＋始終点あり）',
-                                                busRoutesCommonVisible,
-                                                toggleBusRoutesCommonVisible
-                                            ),
-                                            icon: <Bus size={16} />
-                                        },
-                                        {
-                                            label: '路線（無共通コード／始終点欠落）',
-                                            checked: busRoutesOtherVisible,
-                                            onChange: () => handleLayerToggle(
-                                                '路線（無共通コード／始終点欠落）',
-                                                busRoutesOtherVisible,
-                                                toggleBusRoutesOtherVisible
-                                            ),
-                                            icon: <Bus size={16} />
-                                        },
-                                        {
-                                            label: '路線（特定 ID 指定）',
-                                            checked: busRoutesHighlightedVisible,
-                                            onChange: () => handleLayerToggle(
-                                                '路線（特定 ID 指定）',
-                                                busRoutesHighlightedVisible,
-                                                toggleBusRoutesHighlightedVisible
-                                            ),
-                                            icon: <Bus size={16} />
-                                        },
+                                        // {
+                                        //     label: '路線（共通コード＋始終点あり）',
+                                        //     checked: busRoutesCommonVisible,
+                                        //     onChange: () => handleLayerToggle(
+                                        //         '路線（共通コード＋始終点あり）',
+                                        //         busRoutesCommonVisible,
+                                        //         toggleBusRoutesCommonVisible
+                                        //     ),
+                                        //     icon: <Bus size={16} />
+                                        // },
+                                        // {
+                                        //     label: '路線（無共通コード／始終点欠落）',
+                                        //     checked: busRoutesOtherVisible,
+                                        //     onChange: () => handleLayerToggle(
+                                        //         '路線（無共通コード／始終点欠落）',
+                                        //         busRoutesOtherVisible,
+                                        //         toggleBusRoutesOtherVisible
+                                        //     ),
+                                        //     icon: <Bus size={16} />
+                                        // },
+                                        // {
+                                        //     label: '路線（特定 ID 指定）',
+                                        //     checked: busRoutesHighlightedVisible,
+                                        //     onChange: () => handleLayerToggle(
+                                        //         '路線（特定 ID 指定）',
+                                        //         busRoutesHighlightedVisible,
+                                        //         toggleBusRoutesHighlightedVisible
+                                        //     ),
+                                        //     icon: <Bus size={16} />
+                                        // },
                                         {
                                             label: 'バス停（点）',
                                             checked: busStopPointsVisible,
@@ -870,10 +870,7 @@ export default function MapControls({
                             <Hospital size={16} />
                             {medicalLayerVisible ? '医療機関を隠す' : '医療機関を表示'}
                         </Button>
-                        <Button onClick={() => handleLayerToggle('観光地', touristLayerVisible, toggleTouristLayer)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer">
-                            <MapPin size={16} />
-                            {touristLayerVisible ? '観光地を非表示' : '観光地を表示'}
-                        </Button>
+                        
                         <Button onClick={() => handleLayerToggle('道の駅', roadsideStationLayerVisible, toggleRoadsideStationLayerVisible)} className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer">
                             <MapPin size={16} />
                             {roadsideStationLayerVisible ? '道の駅を非表示' : '道の駅を表示'}
@@ -886,7 +883,7 @@ export default function MapControls({
 
 
 
-                        <Accordion type="single" collapsible className="w-full">
+                        {/* <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="transportation">
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center ">
                                     <BusFront size={16} />ワニバースとカシワニクルのバス停毎の乗車数/降車数
@@ -1009,9 +1006,9 @@ export default function MapControls({
                                     </div>
                                 </AccordionContent>
                             </AccordionItem>
-                        </Accordion>
+                        </Accordion> */}
 
-                        <Accordion type="single" collapsible className="w-full">
+                        {/* <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="transportation">
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center ">
                                     <BusFront size={16} />カシワニクル乗降場
@@ -1030,27 +1027,16 @@ export default function MapControls({
                                     ))}
                                 </AccordionContent>
                             </AccordionItem>
-                        </Accordion>
+                        </Accordion> */}
 
-                        <Accordion type="single" collapsible className="w-full">
+                        {/* <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="transportation">
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center justify-between">
                                     <div className='flex space-x-4 w-full'>
                                         <User2 size={16} />
                                         <div>柏市の公共施設</div>
                                     </div>
-                                    {/* <button
-                                        type="button"
-                                        title="凡例グループ表を開く"
-                                        className="p-1 rounded-lg hover:bg-white/60"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation(); // do not toggle accordion
-                                            setFacilityDialogOpen(v => !v);
-                                        }}
-                                    >
-                                        <TableIcon className="h-4 w-4 text-muted-foreground" />
-                                    </button> */}
+                                   
 
                                     <button
                                         type="button"
@@ -1073,34 +1059,16 @@ export default function MapControls({
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
                                     {[
-                                        // { label: '全て', category: '', color: '#808080' }, // All categories (subete)
-                                        // { label: '公立保育園', category: '公立保育園', color: '#FF5733' },
-                                        // { label: '私立認可保育園', category: '私立認可保育園', color: '#33FF57' },
-                                        // { label: '小規模保育施設', category: '小規模保育施設', color: '#DDD92A' },
-                                        // { label: '私立幼稚園', category: '私立幼稚園', color: '#313715' },
-                                        // { label: '認定こども園', category: '認定こども園', color: '#91E5F6' },
-                                        // { label: '児童センター', category: '児童センター', color: '#FF1053' },
-                                        // { label: '地域子育て支援拠点', category: '地域子育て支援拠点', color: '#725AC1' },
-                                        // { label: 'こどもルーム', category: 'こどもルーム', color: '#A1EF8B' },
-                                        // { label: 'こども図書館', category: 'こども図書館', color: '#5D737E' },
-                                        // { label: '市役所・支所・出張所', category: '市役所・支所・出張所', color: '#FF9000' },
-                                        // { label: '図書館', category: '図書館', color: '#13070C' },
-                                        // { label: '薬局', category: '薬局', color: '#7fc6a4' },
-                                        // { label: '市立小学校', category: '市立小学校', color: '#3357FF' },
-                                        // { label: '市内中学校', category: '市内中学校', color: '#B1740F' },
-                                        // { label: '高等学校', category: '高等学校', color: '#23022E' },
-                                        // { label: '大学・大学校', category: '大学・大学校', color: '#764134' },
-                                        // { label: '特別支援学校', category: '特別支援学校', color: '#BD2D87' },
+                                       
 
                                         { label: '全て', category: '', color: '#808080' },
 
-                                        // 6 categories (category6)
                                         { label: '保育園・幼稚園など', category: '保育園・幼稚園など', color: '#0072B2' },
                                         { label: '児童・保育・子育て施設', category: '児童・保育・子育て施設', color: '#E69F00' },
                                         { label: '図書館', category: '図書館', color: '#009E73' },
                                         { label: '市民サービス施設', category: '市民サービス施設', color: '#D55E00' },
                                         { label: '教育施設', category: '教育施設', color: '#CC79A7' },
-                                        // { label: '病院・薬局', category: '病院・薬局', color: '#56B4E9' },
+                                   
                                         { label: '病院・薬局・診療所', category: '病院・薬局・診療所', color: '#ef233c' },
 
 
@@ -1127,11 +1095,11 @@ export default function MapControls({
                                     </div>
                                 </AccordionContent>
                             </AccordionItem>
-                        </Accordion>
+                        </Accordion> */}
 
-                        <Accordion type="single" collapsible className="w-full">
-                            <AccordionItem value="transportation">
-                                <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center justify-between">
+                        {/* <Accordion type="single" collapsible className="w-full"> */}
+                            {/* <AccordionItem value="transportation"> */}
+                                {/* <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center justify-between">
                                     <div className='flex space-x-4 w-full'>
                                         <ShoppingBasket size={16} /> <div>柏市のお店</div>
                                     </div>
@@ -1153,19 +1121,19 @@ export default function MapControls({
                                                 }`}
                                         />
                                     </button>
-                                </AccordionTrigger>
-                                <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
+                                </AccordionTrigger> */}
+                                {/* <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
                                     {[
                                         { label: '全て', category: '', icon: <Store size={16} />, color: "#808080" }, // All categories (subete)
                                         { label: 'デパート・ショッピングモール', category: 'デパート・ショッピングモール', icon: <ShoppingBag size={16} />, color: "#FF5733" }, // Shopping Mall
                                         { label: 'スーパーマーケット', category: 'スーパーマーケット', icon: <Store size={16} />, color: "#33FF57" }, // Supermarket
                                         { label: 'その他', category: 'その他', icon: <Store size={16} />, color: "#FF99C8" }
-                                    ].map(({ label, category, color }) => (
+                                    ].map(({ label, category, color }) => ( */}
 
-                                        <div key={label} className="flex items-center justify-between">
-                                            <Label className="text-sm text-black flex items-center gap-2">
+                                        {/* <div key={label} className="flex items-center justify-between">
+                                            <Label className="text-sm text-black flex items-center gap-2"> */}
                                                 {/* {icon} */}
-                                                <div
+                                                {/* <div
                                                     className="w-4 h-4  border-2"
                                                     style={{ backgroundColor: color, borderColor: "white" }}
                                                 />
@@ -1182,22 +1150,20 @@ export default function MapControls({
                                         <Switch checked={shopsLabelsVisible} onCheckedChange={toggleShopsLabelsVisible} />
                                     </div>
                                 </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                            </AccordionItem> */}
+                        {/* </Accordion> */}
 
-                        <Accordion type="single" collapsible className="w-full">
+                        {/* <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="kashiwa-od">
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center ">
                                     <BusFront size={16} /> カシワニクル OD × 時間帯
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-3 bg-white rounded-xl mt-2 px-4 py-3">
-                                    {/* Toggle 1: show layer (all hours) */}
                                     <div className="flex items-center justify-between">
                                         <Label className="text-sm text-black flex items-center gap-2">OD フロー（全データ）</Label>
                                         <Switch checked={kashiwakuruOdVisible} onCheckedChange={toggleKashiwakuruOdVisible} />
                                     </div>
 
-                                    {/* Toggle 2: enable hour filtering (slider becomes active) */}
                                     <div className="flex items-center justify-between">
                                         <Label className="text-sm text-black flex items-center gap-2">時間帯でフィルター</Label>
                                         <Switch
@@ -1207,7 +1173,6 @@ export default function MapControls({
                                         />
                                     </div>
 
-                                    {/* Slider (disabled when filter is OFF) */}
                                     <div className="flex flex-col gap-2">
                                         <div className="flex items-center justify-between">
                                             <Label className="text-sm text-black">時間帯（開始）</Label>
@@ -1246,7 +1211,6 @@ export default function MapControls({
                                     <Separator className="my-2" />
                                     <div className="text-xs font-semibold text-gray-700">100m メッシュ（集約表示）</div>
 
-                                    {/* show/hide */}
                                     <div className="flex items-center justify-between">
                                         <Label className="text-sm text-black">OD（集約）</Label>
                                         <Switch
@@ -1255,7 +1219,6 @@ export default function MapControls({
                                         />
                                     </div>
 
-                                    {/* filter toggle */}
                                     <div className="flex items-center justify-between">
                                         <Label className="text-sm text-black">時間帯でフィルター</Label>
                                         <Switch
@@ -1265,7 +1228,6 @@ export default function MapControls({
                                         />
                                     </div>
 
-                                    {/* hour slider */}
                                     <div className="flex flex-col gap-2">
                                         <div className="flex items-center justify-between">
                                             <Label className="text-sm text-black">時間帯（開始）</Label>
@@ -1289,7 +1251,6 @@ export default function MapControls({
                                         </div>
                                     </div>
 
-                                    {/* options */}
                                     <div className="flex items-center justify-between">
                                         <Label className="text-sm text-black">100m グリッドを表示</Label>
                                         <Switch
@@ -1319,7 +1280,6 @@ export default function MapControls({
 
                                     <Separator className="my-2" />
 
-                                    {/* Min volume slider */}
                                     <div className="flex items-center justify-between">
                                         <Label className="text-sm text-black">最小ボリューム</Label>
                                         <span className="text-xs text-muted-foreground">{odGridMinVol}</span>
@@ -1337,7 +1297,6 @@ export default function MapControls({
                                         <span>1</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span>
                                     </div>
 
-                                    {/* Focus mode */}
                                     <div className="mt-3">
                                         <div className="flex items-center justify-between mb-2">
                                             <Label className="text-sm text-black">フォーカス（クリック時）</Label>
@@ -1353,7 +1312,6 @@ export default function MapControls({
                                         </div>
 
                                         <div className="grid grid-cols-3 gap-2">
-                                            {/* 発 */}
                                             <button
                                                 type="button"
                                                 onClick={() => onOdGridFocusModeChange("out")}
@@ -1369,7 +1327,6 @@ export default function MapControls({
                                                 発
                                             </button>
 
-                                            {/* 着 */}
                                             <button
                                                 type="button"
                                                 onClick={() => onOdGridFocusModeChange("in")}
@@ -1385,7 +1342,6 @@ export default function MapControls({
                                                 着
                                             </button>
 
-                                            {/* 両方 */}
                                             <button
                                                 type="button"
                                                 onClick={() => onOdGridFocusModeChange("all")}
@@ -1404,7 +1360,7 @@ export default function MapControls({
                                     </div>
                                 </AccordionContent>
                             </AccordionItem>
-                        </Accordion>
+                        </Accordion> */}
 
                         <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="kashiwa-chome">
@@ -1413,11 +1369,11 @@ export default function MapControls({
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
                                     {[
-                                        { label: '町丁目：総数（G列）', checked: chomeTotalVisible, onChange: () => handleLayerToggle('町丁目：総数', chomeTotalVisible, toggleChomeTotalVisible) },
-                                        { label: '町丁目：高齢化率（K列）', checked: chomeAgingVisible, onChange: () => handleLayerToggle('町丁目：高齢化率', chomeAgingVisible, toggleChomeAgingVisible) },
-                                        { label: '町丁目：人口密度（L列）', checked: chomeDensityVisible, onChange: () => handleLayerToggle('町丁目：人口密度', chomeDensityVisible, toggleChomeDensityVisible) },
-                                        { label: '町丁目：総数（2040 推計）', checked: chomeTotal2040Visible, onChange: () => handleLayerToggle('町丁目：総数（2040 推計）', chomeTotal2040Visible, toggleChomeTotal2040Visible) },
-                                        { label: '町丁目：高齢化率（2040 推計）', checked: chomeAging2040Visible, onChange: () => handleLayerToggle('町丁目：高齢化率（2040 推計）', chomeAging2040Visible, toggleChomeAging2040Visible) },
+                                        // { label: '町丁目：総数（G列）', checked: chomeTotalVisible, onChange: () => handleLayerToggle('町丁目：総数', chomeTotalVisible, toggleChomeTotalVisible) },
+                                        // { label: '町丁目：高齢化率（K列）', checked: chomeAgingVisible, onChange: () => handleLayerToggle('町丁目：高齢化率', chomeAgingVisible, toggleChomeAgingVisible) },
+                                        // { label: '町丁目：人口密度（L列）', checked: chomeDensityVisible, onChange: () => handleLayerToggle('町丁目：人口密度', chomeDensityVisible, toggleChomeDensityVisible) },
+                                        // { label: '町丁目：総数（2040 推計）', checked: chomeTotal2040Visible, onChange: () => handleLayerToggle('町丁目：総数（2040 推計）', chomeTotal2040Visible, toggleChomeTotal2040Visible) },
+                                        // { label: '町丁目：高齢化率（2040 推計）', checked: chomeAging2040Visible, onChange: () => handleLayerToggle('町丁目：高齢化率（2040 推計）', chomeAging2040Visible, toggleChomeAging2040Visible) },
                                         { label: '地区区分（17）', checked: subdivisionsVisible, onChange: () => toggleSubdivisionsVisible() },
                                     ].map(({ label, checked, onChange }) => (
                                         <div key={label} className="flex items-center justify-between">
@@ -1426,8 +1382,7 @@ export default function MapControls({
                                         </div>
                                     ))}
 
-                                    <div className="space-y-4">
-                                        {/* ヘッダー行：トグルだけ常時表示 */}
+                                    {/* <div className="space-y-4">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2 text-sm font-medium">
                                                 <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
@@ -1447,7 +1402,6 @@ export default function MapControls({
 
 
 
-                                        {/* 展開コンテンツ：閉じているときは非表示 */}
                                         <AnimatePresence initial={false}>
                                             {chomeFiltersOpen && (
                                                 <motion.div
@@ -1461,7 +1415,6 @@ export default function MapControls({
 
                                                     <Separator />
                                                     <div className="space-y-4">
-                                                        {/* 対象 / パレット / 分類 */}
                                                         <div className="grid grid-cols-12 gap-3">
                                                             <Label className="col-span-4 text-xs text-muted-foreground whitespace-nowrap self-center">対象</Label>
                                                             <div className="col-span-8">
@@ -1479,20 +1432,7 @@ export default function MapControls({
                                                                 </Select>
                                                             </div>
 
-                                                            {/* <Label className="col-span-4 text-xs text-muted-foreground whitespace-nowrap self-center">パレット</Label>
-                                                            <div className="col-span-8">
-                                                                <Select value={chomePalette} onValueChange={(v) => setChomePalette(v as any)}>
-                                                                    <SelectTrigger className="h-8 text-xs rounded-lg w-full">
-                                                                        <SelectValue placeholder="色を選択" />
-                                                                    </SelectTrigger>
-                                                                    <SelectContent>
-                                                                        <SelectItem value="Purples">パープル</SelectItem>
-                                                                        <SelectItem value="Greens">グリーン</SelectItem>
-                                                                        <SelectItem value="Oranges">オレンジ</SelectItem>
-                                                                        <SelectItem value="Blues">ブルー</SelectItem>
-                                                                    </SelectContent>
-                                                                </Select>
-                                                            </div> */}
+                                                           
 
                                                             <Label className="col-span-4 text-xs text-muted-foreground whitespace-nowrap self-center">分類</Label>
                                                             <div className="col-span-8">
@@ -1510,9 +1450,7 @@ export default function MapControls({
                                                             </div>
                                                         </div>
 
-                                                        {/* <Separator /> */}
 
-                                                        {/* ビン数・不透明度 */}
                                                         <div className="space-y-4">
                                                             <div>
                                                                 <div className="flex items-center justify-between mb-1">
@@ -1617,7 +1555,6 @@ export default function MapControls({
 
                                                         <Separator />
 
-                                                        {/* 範囲フィルター */}
                                                         <div className="space-y-3">
                                                             <div className="flex items-center gap-2 text-sm font-medium">
                                                                 <Filter className="h-4 w-4 text-muted-foreground" />
@@ -1625,25 +1562,7 @@ export default function MapControls({
                                                             </div>
 
                                                             <div className="grid grid-cols-12 gap-3">
-                                                                {/* <Label className="col-span-4 text-xs text-muted-foreground self-center">最小{isAgingMetric ? "（%）" : ""}</Label>
-                                                                <Input
-                                                                    inputMode="numeric"
-                                                                    type="number"
-                                                                    value={chomeMin}
-                                                                    onChange={(e) => setChomeMin(e.target.value)}
-                                                                    placeholder={isAgingMetric ? "例: 25" : "例: 1000"}
-                                                                    className="col-span-8 h-8 text-xs rounded-lg"
-                                                                />
-
-                                                                <Label className="col-span-4 text-xs text-muted-foreground self-center">最大{isAgingMetric ? "（%）" : ""}</Label>
-                                                                <Input
-                                                                    inputMode="numeric"
-                                                                    type="number"
-                                                                    value={chomeMax}
-                                                                    onChange={(e) => setChomeMax(e.target.value)}
-                                                                    placeholder={isAgingMetric ? "例: 40" : "例: 10000"}
-                                                                    className="col-span-8 h-8 text-xs rounded-lg"
-                                                                /> */}
+                                                                
 
                                                                 <Label className="col-span-4 text-xs text-muted-foreground self-center">
                                                                     最小{isAgingMetric ? "（%）" : isDensityMetric ? "（人/ha）" : ""}
@@ -1701,7 +1620,6 @@ export default function MapControls({
 
                                                         <Separator />
 
-                                                        {/* ラベル */}
                                                         <div className="space-y-3">
                                                             <div className="flex items-center gap-2 text-sm font-medium">
                                                                 <Type className="h-4 w-4 text-muted-foreground" />
@@ -1740,37 +1658,14 @@ export default function MapControls({
                                                                     </Select>
                                                                 </div>
 
-                                                                {/* <Label className="col-span-4 text-xs text-muted-foreground self-center">指標</Label>
-                                                                <div className="col-span-8">
-                                                                    <Select
-                                                                        value={chomeLabelsMetric}
-                                                                        onValueChange={(v) => {
-                                                                            const m = v as ChomeMetric;
-                                                                            setChomeLabelsMetric(m);
-                                                                            if (chomeLabelsMode === 'metric') {
-                                                                                onChomeLabelsChange(chomeLabelsOn, 'metric', m);
-                                                                            }
-                                                                        }}
-                                                                    >
-                                                                        <SelectTrigger className="h-8 text-xs rounded-lg w-full">
-                                                                            <SelectValue />
-                                                                        </SelectTrigger>
-                                                                        <SelectContent>
-                                                                            <SelectItem value="total">総数（G）</SelectItem>
-                                                                            <SelectItem value="aging">高齢化率（K）</SelectItem>
-                                                                            <SelectItem value="density">人口密度（L）</SelectItem>
-                                                                            <SelectItem value="total_2040">総数（2040 推計）</SelectItem>
-                                                                            <SelectItem value="aging_2040">高齢化率（2040 推計）</SelectItem>
-                                                                        </SelectContent>
-                                                                    </Select>
-                                                                </div> */}
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
-                                    </div>
+                                    </div> */}
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -1819,15 +1714,15 @@ export default function MapControls({
                             </AccordionItem>
                         </Accordion>
 
-                        <Button
+                        {/* <Button
                             onClick={() => handleLayerToggle('柏市 標高グリッド', elevationGridVisible, toggleElevationGrid)}
                             className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer"
                         >
                             <Mountain size={16} />
                             {elevationGridVisible ? '標高グリッドを非表示' : '標高グリッドを表示'}
-                        </Button>
+                        </Button> */}
 
-                        <Button
+                        {/* <Button
                             onClick={() =>
                                 handleLayerToggle("千葉県 道路", chibaRoadsVisible, toggleChibaRoads)
                             }
@@ -1835,7 +1730,7 @@ export default function MapControls({
                         >
                             <Route size={16} />
                             {chibaRoadsVisible ? "道路を非表示" : "道路を表示"}
-                        </Button>
+                        </Button> */}
 
                         {/* Metric Selector */}
                         <Select value={selectedMetric} onValueChange={(value) => {

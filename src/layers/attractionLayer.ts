@@ -1,4 +1,3 @@
-import { blobUrl } from "@/lib/blobUrl";
 
 const ATTRACTION_LAYER_IDS = ['attraction-layer'];
 
@@ -13,7 +12,8 @@ export const toggleAttractionLayer = (
     const sourceId = 'attraction-layer';
     // const tilesetUrl = 'mapbox://frame-ark.attraction-layer';
     // const sourceLayer = 'attraction-layer';
-    const DATA_URL = blobUrl("attraction.geojson");
+    // const DATA_URL = blobUrl("attraction.geojson");
+    const DATA_URL = "/data/attractions.geojson";
     
 
     const labelLayerId = map.getStyle().layers?.find(

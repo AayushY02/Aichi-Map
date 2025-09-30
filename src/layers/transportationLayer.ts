@@ -35,7 +35,8 @@ export const toggleTransportationLayer = (
     const sourceId = 'transportation-info-2022';
     // const tilesetUrl = 'mapbox://frame-ark.transportation';
     // const sourceLayer = 'transportation';
-    const DATA_URL = blobUrl("transportation.geojson");
+    // const DATA_URL = blobUrl("transportation.geojson");
+    const DATA_URL = "/data/bus_route.geojson";
 
 
     const labelLayerId = map.getStyle().layers?.find(
@@ -63,7 +64,7 @@ export const toggleTransportationLayer = (
                 // 'source-layer': sourceLayer,
                 layout: { visibility: 'visible' },
                 paint: {
-                    'line-color': ['get', 'Color'],
+                    'line-color': "#f21",
                     'line-width': 2
                 }
             }, labelLayerId);
@@ -122,8 +123,7 @@ export const toggleTransportationLayer = (
 
         // hide everything else
         [
-            'mesh-1km-fill', 'mesh-1km-outline',
-            'mesh-500m-fill', 'mesh-500m-outline',
+           
             'mesh-250m-fill', 'mesh-250m-outline',
         ].forEach(id => {
             if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
@@ -176,7 +176,7 @@ export const toggleBusStops = (
     if (!busStopsLayerVisible) {
         // Add vector source
         if (!map.getSource(sourceId)) {
-            map.addSource(sourceId, { type: 'geojson', data: "/data/bus_stops.geojson" });
+            map.addSource(sourceId, { type: 'geojson', data: "/data/bus_stop.geojson" });
         }
 
         // Add circle layer

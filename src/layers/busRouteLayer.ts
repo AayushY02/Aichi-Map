@@ -190,8 +190,6 @@ type RouteArgs = {
 };
 
 const MESH_LAYER_IDS = [
-  "mesh-1km-fill", "mesh-1km-outline",
-  "mesh-500m-fill", "mesh-500m-outline",
   "mesh-250m-fill", "mesh-250m-outline",
 ];
 

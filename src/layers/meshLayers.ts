@@ -17,76 +17,10 @@ export const addMeshLayers = (map: maplibregl.Map, metric: string) => {
 
     const labelLayerId = getLabelLayerId(map);
 
-    if (!map.getSource('chiba-1km-mesh')) {
-
-        map.addSource('chiba-1km-mesh', {
-            // type: 'geojson',
-            // data: '/data/12_chiba_1km_pop.geojson'
-
-            type: "vector",
-            url: "https://api.maptiler.com/tiles/0198ca6f-2730-7e7b-99ae-799c197f5ad1/tiles.json?key=HCoMhdrImqEq1BdoYmms"
-        });
-    }
-
-    map.addLayer({
-        id: 'mesh-1km-fill',
-        type: 'fill',
-        source: 'chiba-1km-mesh',
-        "source-layer": "12_chiba_1km_pop",
-        minzoom: 0,
-        maxzoom: 12,
-        paint: {
-            'fill-color': getColorExpression(metric),
-            'fill-opacity': 0.6
-        }
-    }, labelLayerId);
-
-    map.addLayer({
-        id: 'mesh-1km-outline',
-        type: 'line',
-        source: 'chiba-1km-mesh',
-        // "source-layer" : "L_12_chiba_1km_pop",
-        "source-layer": "12_chiba_1km_pop",
-
-        minzoom: 0,
-        maxzoom: 12,
-        paint: { 'line-color': '#0099cc', 'line-width': 0.75 }
-    }, labelLayerId);
-
-    if (!map.getSource('chiba-500m-mesh')) {
-        map.addSource('chiba-500m-mesh', {
-            type: 'geojson',
-            data: '/data/12_chiba_500m_pop.geojson'
-        });
-    }
-
-    map.addLayer({
-        id: 'mesh-500m-outline',
-        type: 'line',
-        source: 'chiba-500m-mesh',
-        // "source-layer": "mesh-500",
-        minzoom: 12,
-        maxzoom: 13.5,
-        paint: { 'line-color': '#0099cc', 'line-width': 0.75 }
-    }, labelLayerId);
-
-    map.addLayer({
-        id: 'mesh-500m-fill',
-        type: 'fill',
-        source: 'chiba-500m-mesh',
-        // "source-layer": "mesh-500",
-        minzoom: 12,
-        maxzoom: 13.5,
-        paint: {
-            'fill-color': getColorExpression(metric),
-            'fill-opacity': 0.6
-        }
-    }, labelLayerId);
-
     if (!map.getSource('chiba-250m-mesh')) {
         map.addSource('chiba-250m-mesh', {
             type: 'geojson',
-            data: '/data/12_chiba_250m_pop_new.geojson'
+            data: '/data/population.geojson'
         });
     }
 

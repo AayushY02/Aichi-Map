@@ -13,7 +13,9 @@ export const togglePublicFacilityLayer = (
     const sourceId = 'public-facilities';
     // const tilesetUrl = 'mapbox://frame-ark.public-facilities';
     // const sourceLayer = 'public-facilities';
-    const DATA_URL = blobUrl("KS_PublicFacility_enriched.geojson");
+    // const DATA_URL = blobUrl("KS_PublicFacility_enriched.geojson");
+    const DATA_URL = "/data/PublicFacility.geojson";
+    
 
     const labelLayerId = map.getStyle().layers?.find(
         l => l.type === 'symbol' && l.layout?.['text-field'] && l.id.includes('place')

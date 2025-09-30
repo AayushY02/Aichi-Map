@@ -23,8 +23,8 @@ let __stopPopup: maplibregl.Popup | null = null;
 let __handlersBound = false;
 
 /** Configure your data path (or set VITE_BUS_STOPS_URL) */
-// const BUS_STOPS_URL = "/data/bus_coverage.geojson";
-const BUS_STOPS_URL = blobUrl("bus_coverage.geojson");
+const BUS_STOPS_URL = "/data/bus_stop.geojson";
+// const BUS_STOPS_URL = blobUrl("bus_coverage.geojson");
 
 /** IDs (shared across both toggles) */
 const IDS = {

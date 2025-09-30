@@ -31,6 +31,7 @@ dist-ssr
 /japan-map/public/data/12_chiba_250m_pop.geojson
 /data/*
 /public/data/kashiwa_public_facility_cat6.geojson
+/public/data/administration_aichi.geojson
 /public/data/kashiwa_public_facility.geojson
 /public/data/kashiwa_public_facility_cat6_cleaned.geojson
 

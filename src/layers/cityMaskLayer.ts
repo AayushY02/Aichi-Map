@@ -20,7 +20,7 @@ const IDS = {
 
 const KASHIWA_URL =
     (import.meta as any).env?.VITE_KASHIWA_BOUNDARY_URL ??
-    "/data/kashiwa_boundary_new.geojson";
+    "/data/boundary.geojson";
 
 /** ---------- geometry helpers (hole mask; no boolean ops needed) ---------- */
 function worldOuterRing(): [number, number][] {

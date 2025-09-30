@@ -13,7 +13,8 @@ export const toggleMedicalLayer = (
     const sourceId = 'medical-institute-land';
     // const tilesetUrl = 'mapbox://frame-ark.medical-institute-land';
     // const sourceLayer = 'medical-institute-land';
-        const DATA_URL = blobUrl("medical_institute_land.geojson");
+        // const DATA_URL = blobUrl("medical_institute_land.geojson");
+        const DATA_URL = "/data/medical.geojson";
 
 
     const labelLayerId = map.getStyle().layers?.find(
