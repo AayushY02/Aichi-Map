@@ -7,7 +7,7 @@ import './App.css';
 import { Card } from './components/ui/card';
 import 'ldrs/react/Grid.css';
 import { MAP_STYLES } from './constants/mapStyles';
-import { JAPAN_BOUNDS, CHIBA_BOUNDS, NAGAKUTE_BOUNDS, AICHI_BOUNDS } from './constants/bounds';
+import { JAPAN_BOUNDS, NAGAKUTE_BOUNDS, AICHI_BOUNDS } from './constants/bounds';
 import { getColorExpression } from './utils/expressions';
 import { addMeshLayers } from './layers/meshLayers';
 import { toggleAdminBoundaries } from './layers/adminBoundaries';
@@ -15,8 +15,8 @@ import { toggleAdminBoundaries } from './layers/adminBoundaries';
 import { toggleAgriLayer } from './layers/agriLayer';
 import LoadingOverlay from './components/LoadingOverlay';
 import MapControls from './components/MapControls';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { selectedMeshIdState } from './state/meshSelection';
+import { useRecoilState, useRecoilValue } from 'recoil';
+// import { selectedMeshIdState } from './state/meshSelection';
 import ChatPanel from './components/ChatPanel';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toggleAlightingLayer, toggleBoardingLayer, toggleBusStops, toggleTransportationLayer } from './layers/transportationLayer';
@@ -29,8 +29,8 @@ import { toggleAttractionLayer } from './layers/attractionLayer';
 import { toggleBusPickDropLayer } from './layers/busPickDropLayer';
 import { setAllPassengerLabelsVisible, toggleBusPassengerLayer, toggleMasuoCourseDropLayer, toggleMasuoCourseRideLayer, toggleSakaeCourseDropLayer, toggleSakaeCourseRideLayer, toggleShonanCourseDropLayer, toggleShonanCourseRideLayer, toggleWaniCityHallRouteLayer, toggleWaniOutboundDropLayer, toggleWaniOutboundRideLayer, toggleWaniReturnDropLayer, toggleWaniReturnRideLayer } from './layers/busPassengerLayer';
 import { toggleNewBusPassengerLayer, toggleNewKashiwakuruDropLayer, toggleNewKashiwakuruRideLayer } from './layers/newbusPassengerLayer';
-import { categoriesNew as categories, toggleKashiwaPublicFacilityLayer, toggleKashiwaPublicFacilityLabels, updateKashiwaPublicFacilityLabelsFilter } from './layers/kashiwaPublicFacilities';
-import { shopCategories, toggleKashiwaShopsLabels, toggleKashiwaShopsLayer, updateKashiwaShopsLabelsFilter } from './layers/kashiwaShops';
+import { categoriesNew as categories, toggleKashiwaPublicFacilityLayer, toggleKashiwaPublicFacilityLabels} from './layers/kashiwaPublicFacilities';
+import { shopCategories, toggleKashiwaShopsLabels } from './layers/kashiwaShops';
 import PptxGenJS from "pptxgenjs";
 import { globalVisibleLayersState } from './state/activeLayersAtom';
 import BusPassengerLayerLegend from './components/Legend/BusPassengerLayerLegend';
@@ -71,8 +71,8 @@ import { buildMeshForBounds, coverBox } from './lib/mesh250';
 import { AskAiToolbar } from './components/AskAiToolbar';
 // mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
-const FACILITIES_URL = "/data/kashiwa_public_facilities_new.geojson";
-const SHOPS_URL = "/data/kashiwa_shops.geojson";
+// const FACILITIES_URL = "/data/kashiwa_public_facilities_new.geojson";
+// const SHOPS_URL = "/data/kashiwa_shops.geojson";
 
 // Optional: if your generated filenames are different, just change the strings above.
 // e.g. "/data/kashiwa_public_facilities.from_csv.no_duplicated_firstcol.name_fixed.geojson"
@@ -131,9 +131,9 @@ export default function MapView() {
     const selectedMetricRef = useRef(selectedMetric);
     const [agriLayerVisible, setAgriLayerVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const setSelectedMeshId = useSetRecoilState(selectedMeshIdState);
+    // const setSelectedMeshId = useSetRecoilState(selectedMeshIdState);
     const [chatMeshRef, setChatMeshRef] = useState<{ level: "250m"; id: string } | null>(null); // NEW
-    const selectionPopupRef = useRef<maplibregl.Popup | null>(null);
+    // const selectionPopupRef = useRef<maplibregl.Popup | null>(null);
     const [transportVisible, setTransportVisible] = useState(false);
     const [pbFacilityVisible, setPbFacilityVisible] = useState(false);
     const [schoolLayerVisible, setSchoolLayerVisible] = useState(false);
@@ -166,7 +166,7 @@ export default function MapView() {
     const [kashiwaPublicFacilityVisible, setKashiwaPublicFacilityVisible] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-    const [kashiwaShopsVisible, setKashiwaShopsVisible] = useState(false);
+    const [, setKashiwaShopsVisible] = useState(false);
     const [selectedShopCategories, setSelectedShopCategories] = useState<string[]>([]);
 
     // MapView.tsx (inside component state block)
@@ -219,8 +219,8 @@ export default function MapView() {
     const [railStationsVisible, setRailStationsVisible] = useState(false);
     const [stationCoverageVisible, setStationCoverageVisible] = useState(false);
 
-    const [facilityFC, setFacilityFC] = useState<FC | null>(null);
-    const [shopFC, setShopFC] = useState<FC | null>(null);
+    const [facilityFC, ] = useState<FC | null>(null);
+    const [shopFC, ] = useState<FC | null>(null);
     const [kashiwaFacilityLabelsVisible, setKashiwaFacilityLabelsVisible] = useState(false);
     const [kashiwaShopsLabelsVisible, setKashiwaShopsLabelsVisible] = useState(false);
 
@@ -1116,12 +1116,12 @@ export default function MapView() {
         });
     }
 
-    function meshLevelFromLayerId(id: string): "250m" | null {
-        // if (id.includes("1km")) return "1km";
-        // if (id.includes("500m")) return "500m";
-        if (id.includes("250m")) return "250m";
-        return null;
-    }
+    // function meshLevelFromLayerId(id: string): "250m" | null {
+    //     // if (id.includes("1km")) return "1km";
+    //     // if (id.includes("500m")) return "500m";
+    //     if (id.includes("250m")) return "250m";
+    //     return null;
+    // }
     useEffect(() => {
         selectedMetricRef.current = selectedMetric;
     }, [selectedMetric]);

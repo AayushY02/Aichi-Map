@@ -16,7 +16,7 @@ import {
 import {
     Layers,
     // Mountain,
-    Ruler,
+    // Ruler,
     Landmark,
     MapPin,
     Building,
@@ -28,16 +28,16 @@ import {
     Menu,
     BusFront,
     MapPinCheckIcon,
-    User2,
-    Circle,
-    ShoppingBasket,
-    Store,
-    ShoppingBag,
+    // User2,
+    // Circle,
+    // ShoppingBasket,
+    // Store,
+    // ShoppingBag,
     NotepadTextDashed,
     Mountain,
     MapIcon,
-    TableIcon,
-    Route,
+    // TableIcon,
+    // Route,
 
 } from 'lucide-react';
 import { Label } from './ui/label';
@@ -47,14 +47,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 // import { useRecoilState } from 'recoil';
 // import { masuoCourseDropLayerVisibleState } from '@/state/layers';
 // import { toggleMasuoCourseRideLayer } from '@/layers/busPassengerLayer';
-import { useRecoilState, useSetRecoilState } from "recoil";
+import {  useSetRecoilState } from "recoil";
 import { globalVisibleLayersState } from '@/state/activeLayersAtom';
-import { Slider } from './ui/slider';
+// import { Slider } from './ui/slider';
 import { Separator } from '@/components/ui/separator';
-import { SlidersHorizontal, Filter, Type } from 'lucide-react';
+// import { SlidersHorizontal, Filter, Type } from 'lucide-react';
 import { Input } from './ui/input';
 import { LegendRow } from './Legend/LegendGroupTableDialog';
-import { facilityLegendTableOpenState, shopLegendTableOpenState } from '@/state/legendTables';
+// import { facilityLegendTableOpenState, shopLegendTableOpenState } from '@/state/legendTables';
 // import { userLayersPanelOpenAtom } from '@/state/uiAtoms';
 
 // const allCourses = ['逆井 コース', '南増尾 コース', '沼南コース'];
@@ -296,15 +296,15 @@ interface MapControlsProps {
 export default function MapControls({
     currentStyle,
     onStyleChange,
-    roadsVisible,
-    toggleRoads,
+    // roadsVisible,
+    // toggleRoads,
     adminVisible,
     toggleAdmin,
     // terrainEnabled,
     // toggleTerrain,
     fitToBounds,
-    agriLayerVisible,
-    toggleAgri,
+    // agriLayerVisible,
+    // toggleAgri,
     selectedMetric,
     onMetricChange,
     styles,
@@ -316,84 +316,84 @@ export default function MapControls({
     toggleSchoolLayer,
     medicalLayerVisible,
     toggleMedicalLayer,
-    touristLayerVisible,
-    toggleTouristLayer,
+    // touristLayerVisible,
+    // toggleTouristLayer,
     roadsideStationLayerVisible,
     toggleRoadsideStationLayerVisible,
     busStopsVisible,
     toggleBusStops,
     toggleAttractionLayer,
     attractionLayerVisible,
-    busPickDropLayerVisible,
-    toggleBusPickDropLayerVisible,
-    busPassengerLayerVisible,
-    toggleBusPassengerLayerVisible,
-    sakaeCourseRideLayerVisible,
-    toggleSakaeCourseRideLayerVisible,
-    sakaeCourseDropLayerVisible,
-    toggleSakaeCourseDropLayerVisible,
+    // busPickDropLayerVisible,
+    // toggleBusPickDropLayerVisible,
+    // busPassengerLayerVisible,
+    // toggleBusPassengerLayerVisible,
+    // sakaeCourseRideLayerVisible,
+    // toggleSakaeCourseRideLayerVisible,
+    // sakaeCourseDropLayerVisible,
+    // toggleSakaeCourseDropLayerVisible,
 
-    masuoCourseRideLayerVisible,
-    toggleMasuoCourseRideLayerVisible,
-    masuoCourseDropLayerVisible,
-    toggleMasuoCourseDropLayerVisible,
+    // masuoCourseRideLayerVisible,
+    // toggleMasuoCourseRideLayerVisible,
+    // masuoCourseDropLayerVisible,
+    // toggleMasuoCourseDropLayerVisible,
 
-    shonanCourseRideLayerVisible,
-    toggleShonanCourseRideLayerVisible,
-    shonanCourseDropLayerVisible,
-    toggleShonanCourseDropLayerVisible,
+    // shonanCourseRideLayerVisible,
+    // toggleShonanCourseRideLayerVisible,
+    // shonanCourseDropLayerVisible,
+    // toggleShonanCourseDropLayerVisible,
     downloadPpt,
 
 
-    newbusLayerVisible,
-    toggleNewBusLayerVisible,
+    // newbusLayerVisible,
+    // toggleNewBusLayerVisible,
 
-    newKashiwakuruRideLayerVisible,
-    toggleNewKashiwakuruRideLayerVisible,
+    // newKashiwakuruRideLayerVisible,
+    // toggleNewKashiwakuruRideLayerVisible,
 
-    newKashiwakuruDropLayerVisible,
-    toggleNewKashiwakuruDropLayerVisible,
+    // newKashiwakuruDropLayerVisible,
+    // toggleNewKashiwakuruDropLayerVisible,
 
-    toggleKashiwaPublicFacilityVisible,
-    selectedCategories,
+    // toggleKashiwaPublicFacilityVisible,
+    // selectedCategories,
 
-    toggleKashiwaShopsVisible,
-    selectedShopCategories,
+    // toggleKashiwaShopsVisible,
+    // selectedShopCategories,
 
-    elevationGridVisible,
-    toggleElevationGrid,
+    // elevationGridVisible,
+    // toggleElevationGrid,
 
-    shonanRouteVisible,
-    toggleShonanRouteVisible,
-    masuoRouteVisible,
-    toggleMasuoRouteVisible,
-    sakaiRouteVisible,
-    toggleSakaiRouteVisible,
+    // shonanRouteVisible,
+    // toggleShonanRouteVisible,
+    // masuoRouteVisible,
+    // toggleMasuoRouteVisible,
+    // sakaiRouteVisible,
+    // toggleSakaiRouteVisible,
 
-    kashiwakuruOdVisible,
-    toggleKashiwakuruOdVisible,
-    kashiwakuruOdHour,
-    onKashiwakuruOdHourChange,
-    onClearOdEndpointHighlight,
+    // kashiwakuruOdVisible,
+    // toggleKashiwakuruOdVisible,
+    // kashiwakuruOdHour,
+    // onKashiwakuruOdHourChange,
+    // onClearOdEndpointHighlight,
     captureMapScreenshot,
-    kashiwakuruOdFilterOn,
-    onToggleKashiwakuruOdFilter,
+    // kashiwakuruOdFilterOn,
+    // onToggleKashiwakuruOdFilter,
 
-    chomeTotalVisible,
-    toggleChomeTotalVisible,
-    chomeAgingVisible,
-    toggleChomeAgingVisible,
-    chomeDensityVisible,
-    toggleChomeDensityVisible,
-    onChomeStyleChange,
+    // chomeTotalVisible,
+    // toggleChomeTotalVisible,
+    // chomeAgingVisible,
+    // toggleChomeAgingVisible,
+    // chomeDensityVisible,
+    // toggleChomeDensityVisible,
+    // onChomeStyleChange,
 
-    onChomeRangeChange,
+    // onChomeRangeChange,
 
-    onChomeLabelsChange,
-    chomeTotal2040Visible,
-    toggleChomeTotal2040Visible,
-    chomeAging2040Visible,
-    toggleChomeAging2040Visible,
+    // onChomeLabelsChange,
+    // chomeTotal2040Visible,
+    // toggleChomeTotal2040Visible,
+    // chomeAging2040Visible,
+    // toggleChomeAging2040Visible,
 
     meshVisible,
     toggleMesh,
@@ -401,29 +401,29 @@ export default function MapControls({
     terrainEnabled,
     toggleTerrain,
 
-    passengerLabelsVisible,
-    togglePassengerLabelsVisible,
+    // passengerLabelsVisible,
+    // togglePassengerLabelsVisible,
 
-    odGridVisible,
-    onToggleOdGrid,
-    odGridFilterOn,
-    onToggleOdGridFilter,
-    odGridHour,
-    onOdGridHourChange,
-    odGridShowGrid,
-    onToggleOdGridShowGrid,
-    odGridUndirected,
-    onToggleOdGridUndirected,
-    odGridMinVol,
-    onOdGridMinVolChange,
-    odGridFocusMode,
-    onOdGridFocusModeChange,
-    onOdGridClearFocus,
-    odGridShowStops,
-    onToggleOdGridShowStops,
+    // odGridVisible,
+    // onToggleOdGrid,
+    // odGridFilterOn,
+    // onToggleOdGridFilter,
+    // odGridHour,
+    // onOdGridHourChange,
+    // odGridShowGrid,
+    // onToggleOdGridShowGrid,
+    // odGridUndirected,
+    // onToggleOdGridUndirected,
+    // odGridMinVol,
+    // onOdGridMinVolChange,
+    // odGridFocusMode,
+    // onOdGridFocusModeChange,
+    // onOdGridClearFocus,
+    // odGridShowStops,
+    // onToggleOdGridShowStops,
 
     // To disable 発/着/両方 when a single OD line is isolated
-    odGridSingleOD,
+    // odGridSingleOD,
 
     busCoverageVisible,            // <-- NEW
     toggleBusCoverage,
@@ -434,21 +434,21 @@ export default function MapControls({
     cityMaskVisible,
     toggleCityMask,
 
-    waniOutboundRideLayerVisible,
-    toggleWaniOutboundRideLayerVisible,
-    waniOutboundDropLayerVisible,
-    toggleWaniOutboundDropLayerVisible,
-    waniReturnRideLayerVisible,
-    toggleWaniReturnRideLayerVisible,
-    waniReturnDropLayerVisible,
-    toggleWaniReturnDropLayerVisible,
-    waniRouteVisible,
-    toggleWaniRouteVisible,
+    // waniOutboundRideLayerVisible,
+    // toggleWaniOutboundRideLayerVisible,
+    // waniOutboundDropLayerVisible,
+    // toggleWaniOutboundDropLayerVisible,
+    // waniReturnRideLayerVisible,
+    // toggleWaniReturnRideLayerVisible,
+    // waniReturnDropLayerVisible,
+    // toggleWaniReturnDropLayerVisible,
+    // waniRouteVisible,
+    // toggleWaniRouteVisible,
 
-    busRoutesCommonVisible,
-    toggleBusRoutesCommonVisible,
-    busRoutesOtherVisible,
-    toggleBusRoutesOtherVisible,
+    // busRoutesCommonVisible,
+    // toggleBusRoutesCommonVisible,
+    // busRoutesOtherVisible,
+    // toggleBusRoutesOtherVisible,
 
     railLinesVisible,
     toggleRailLinesVisible,
@@ -457,13 +457,13 @@ export default function MapControls({
     stationCoverageVisible,
     toggleStationCoverageVisible,
 
-    facilityLabelsVisible,
-    toggleFacilityLabelsVisible,
-    shopsLabelsVisible,
-    toggleShopsLabelsVisible,
+    // facilityLabelsVisible,
+    // toggleFacilityLabelsVisible,
+    // shopsLabelsVisible,
+    // toggleShopsLabelsVisible,
 
-    busRoutesHighlightedVisible,
-    toggleBusRoutesHighlightedVisible,
+    // busRoutesHighlightedVisible,
+    // toggleBusRoutesHighlightedVisible,
 
     stationPassengersVisible,
     toggleStationPassengersVisible,
@@ -471,8 +471,8 @@ export default function MapControls({
     subdivisionsVisible,
     toggleSubdivisionsVisible,
 
-    chibaRoadsVisible,
-    toggleChibaRoads,
+    // chibaRoadsVisible,
+    // toggleChibaRoads,
 
     busRoutesFrequencyVisible,
     toggleBusRoutesFrequencyVisible,
@@ -488,39 +488,39 @@ export default function MapControls({
     const setGlobalVisibleLayers = useSetRecoilState(globalVisibleLayersState);
 
     // target metric whose style/filter you’re editing
-    const [chomeTarget, setChomeTarget] = useState<ChomeMetric>("total");
-    const isAgingMetric = chomeTarget === "aging" || chomeTarget === "aging_2040";
-    const isDensityMetric = chomeTarget === "density";
+    // const [chomeTarget, ] = useState<ChomeMetric>("total");
+    // const isAgingMetric = chomeTarget === "aging" || chomeTarget === "aging_2040";
+    // const isDensityMetric = chomeTarget === "density";
 
     // style controls
     // const [chomePalette, setChomePalette] = useState<"Blues" | "Greens" | "Oranges" | "Purples">("Purples");
-    const [chomeMethod, setChomeMethod] = useState<"quantile" | "equal" | "jenks" | "manual">("quantile");
-    const [chomeBins, setChomeBins] = useState<number>(5);       // 3–7 sensible
-    const [chomeOpacity, setChomeOpacity] = useState<number>(70); // 30–100 as percent
+    // const [chomeMethod, setChomeMethod] = useState<"quantile" | "equal" | "jenks" | "manual">("quantile");
+    // const [chomeBins, setChomeBins] = useState<number>(5);       // 3–7 sensible
+    // const [chomeOpacity, setChomeOpacity] = useState<number>(70); // 30–100 as percent
 
     // range filter
-    const [chomeMin, setChomeMin] = useState<string>("");
-    const [chomeMax, setChomeMax] = useState<string>("");
+    // const [chomeMin, setChomeMin] = useState<string>("");
+    // const [chomeMax, setChomeMax] = useState<string>("");
 
     // labels
-    const [chomeLabelsOn, setChomeLabelsOn] = useState<boolean>(false);
-    const [chomeLabelsMode, setChomeLabelsMode] = useState<"name" | "metric">("name");
-    const [chomeLabelsMetric, setChomeLabelsMetric] = useState<ChomeMetric>("total");
+    // const [chomeLabelsOn, setChomeLabelsOn] = useState<boolean>(false);
+    // const [chomeLabelsMode, setChomeLabelsMode] = useState<"name" | "metric">("name");
+    // const [chomeLabelsMetric, setChomeLabelsMetric] = useState<ChomeMetric>("total");
     // 町丁目フィルターの開閉
-    const [chomeFiltersOpen, setChomeFiltersOpen] = useState(false);
+    // const [chomeFiltersOpen] = useState(false);
 
-    const [facilityDialogOpen, setFacilityDialogOpen] = useRecoilState(facilityLegendTableOpenState);
-    const [shopDialogOpen, setShopDialogOpen] = useRecoilState(shopLegendTableOpenState);
+    // const [facilityDialogOpen, setFacilityDialogOpen] = useRecoilState(facilityLegendTableOpenState);
+    // const [shopDialogOpen, setShopDialogOpen] = useRecoilState(shopLegendTableOpenState);
     // const setUserPanelOpen = useSetRecoilState(userLayersPanelOpenAtom);
 
-    const emptyBreaks = (n: number) => Array.from({ length: Math.max(0, n) }, () => "");
-    const [manualBreaksByMetric, setManualBreaksByMetric] = useState<Record<ChomeMetric, string[]>>({
-        total: emptyBreaks(4),       // default 5 bins → 4 thresholds
-        aging: emptyBreaks(4),
-        density: emptyBreaks(4),
-        total_2040: emptyBreaks(4),
-        aging_2040: emptyBreaks(4),
-    });
+    // const emptyBreaks = (n: number) => Array.from({ length: Math.max(0, n) }, () => "");
+    // const [manualBreaksByMetric, setManualBreaksByMetric] = useState<Record<ChomeMetric, string[]>>({
+    //     total: emptyBreaks(4),       // default 5 bins → 4 thresholds
+    //     aging: emptyBreaks(4),
+    //     density: emptyBreaks(4),
+    //     total_2040: emptyBreaks(4),
+    //     aging_2040: emptyBreaks(4),
+    // });
 
     const [freqThresholdsText, setFreqThresholdsText] = useState(
         busRoutesFrequencyStyle.thresholds.join(",")
@@ -561,101 +561,101 @@ export default function MapControls({
         });
     };
 
-    function resetChomeUIAndLayers() {
-        // Reset UI state
-        setChomeTarget("total");
-        // setChomePalette("Purples");
-        setChomeMethod("quantile");
-        setChomeBins(5);
-        setChomeOpacity(70);
-        setChomeMin("");
-        setChomeMax("");
-        setChomeLabelsOn(false);
-        setChomeLabelsMode("name");
-        setChomeLabelsMetric("total");
+    // function resetChomeUIAndLayers() {
+    //     // Reset UI state
+    //     setChomeTarget("total");
+    //     // setChomePalette("Purples");
+    //     setChomeMethod("quantile");
+    //     setChomeBins(5);
+    //     setChomeOpacity(70);
+    //     setChomeMin("");
+    //     setChomeMax("");
+    //     setChomeLabelsOn(false);
+    //     setChomeLabelsMode("name");
+    //     setChomeLabelsMetric("total");
 
-        // Reset layers to defaults (safe regardless of visibility)
-        const defaults = {
-            total: { palette: "Purples" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
-            aging: { palette: "Greens" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
-            density: { palette: "Oranges" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
-            total_2040: { palette: "Blues" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
-            aging_2040: { palette: "Greens" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
-        };
+    //     // Reset layers to defaults (safe regardless of visibility)
+    //     const defaults = {
+    //         total: { palette: "Purples" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
+    //         aging: { palette: "Greens" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
+    //         density: { palette: "Oranges" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
+    //         total_2040: { palette: "Blues" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
+    //         aging_2040: { palette: "Greens" as const, method: "quantile" as const, bins: 5, opacity: 0.7 },
+    //     };
 
-        (["total", "aging", "density", "total_2040", "aging_2040"] as const).forEach((metric) => {
-            onChomeStyleChange(metric, defaults[metric]);   // default palette/method/bins/opacity
-            onChomeRangeChange(metric, null, null);         // clear range filter
-        });
+    //     (["total", "aging", "density", "total_2040", "aging_2040"] as const).forEach((metric) => {
+    //         onChomeStyleChange(metric, defaults[metric]);   // default palette/method/bins/opacity
+    //         onChomeRangeChange(metric, null, null);         // clear range filter
+    //     });
 
-        // Labels off
-        onChomeLabelsChange(false, "name", "total");
-    }
+    //     // Labels off
+    //     onChomeLabelsChange(false, "name", "total");
+    // }
 
-    useEffect(() => {
-        if (!chomeFiltersOpen) return;
+    // useEffect(() => {
+    //     if (!chomeFiltersOpen) return;
 
-        if (chomeMethod === "manual") {
-            // Collect numbers; require exactly (bins - 1) values
-            const raw = (manualBreaksByMetric[chomeTarget] ?? [])
-                .map((s) => s.trim())
-                .filter((s) => s !== "")
-                .map((s) => Number(s))
-                .filter((n) => !Number.isNaN(n));
+    //     if (chomeMethod === "manual") {
+    //         // Collect numbers; require exactly (bins - 1) values
+    //         const raw = (manualBreaksByMetric[chomeTarget] ?? [])
+    //             .map((s) => s.trim())
+    //             .filter((s) => s !== "")
+    //             .map((s) => Number(s))
+    //             .filter((n) => !Number.isNaN(n));
 
-            if (raw.length === Math.max(0, chomeBins - 1)) {
-                const sorted = [...raw].sort((a, b) => a - b);
-                onChomeStyleChange(chomeTarget, {
-                    method: "manual",
-                    breaks: sorted,
-                    opacity: chomeOpacity / 100,
-                });
-            }
-        } else {
-            onChomeStyleChange(chomeTarget, {
-                method: chomeMethod,
-                bins: chomeBins,
-                opacity: chomeOpacity / 100,
-            });
-        }
-    }, [chomeFiltersOpen, chomeTarget, chomeMethod, chomeBins, chomeOpacity, manualBreaksByMetric]);
-
-
-    useEffect(() => {
-        if (!chomeFiltersOpen) return;
-        const rawMin = chomeMin === "" ? null : Number(chomeMin);
-        const rawMax = chomeMax === "" ? null : Number(chomeMax);
-        // const toProp = (v: number | null) => (v == null ? null : isAgingMetric ? v / 100 : v); // % → ratio for aging metrics
-        const toProp = (v: number | null) => {
-            if (v == null) return null;
-            if (isAgingMetric) return v / 100; // % → 0..1
-            if (isDensityMetric) return v * 100; // per ha → per km²
-            return v;
-        };
-
-        const t = setTimeout(() => {
-            onChomeRangeChange(chomeTarget, toProp(rawMin), toProp(rawMax));
-        }, 200);
-        return () => clearTimeout(t);
-
-    }, [chomeFiltersOpen, chomeTarget, chomeMin, chomeMax]);
-
-    useEffect(() => {
-        if (chomeMethod !== "manual") return;
-        setManualBreaksByMetric((prev) => {
-            const need = Math.max(0, chomeBins - 1);
-            const curr = prev[chomeTarget] ?? [];
-            const next = Array.from({ length: need }, (_, i) => curr[i] ?? "");
-            return { ...prev, [chomeTarget]: next };
-        });
-    }, [chomeMethod, chomeTarget, chomeBins]);
+    //         if (raw.length === Math.max(0, chomeBins - 1)) {
+    //             const sorted = [...raw].sort((a, b) => a - b);
+    //             onChomeStyleChange(chomeTarget, {
+    //                 method: "manual",
+    //                 breaks: sorted,
+    //                 opacity: chomeOpacity / 100,
+    //             });
+    //         }
+    //     } else {
+    //         onChomeStyleChange(chomeTarget, {
+    //             method: chomeMethod,
+    //             bins: chomeBins,
+    //             opacity: chomeOpacity / 100,
+    //         });
+    //     }
+    // }, [chomeFiltersOpen, chomeTarget, chomeMethod, chomeBins, chomeOpacity, manualBreaksByMetric]);
 
 
-    useEffect(() => {
-        if (!chomeFiltersOpen) return;
-        onChomeLabelsChange(chomeLabelsOn, chomeLabelsMode, chomeLabelsMetric);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chomeFiltersOpen, chomeLabelsOn, chomeLabelsMode, chomeLabelsMetric]);
+    // useEffect(() => {
+    //     if (!chomeFiltersOpen) return;
+    //     const rawMin = chomeMin === "" ? null : Number(chomeMin);
+    //     const rawMax = chomeMax === "" ? null : Number(chomeMax);
+    //     // const toProp = (v: number | null) => (v == null ? null : isAgingMetric ? v / 100 : v); // % → ratio for aging metrics
+    //     const toProp = (v: number | null) => {
+    //         if (v == null) return null;
+    //         if (isAgingMetric) return v / 100; // % → 0..1
+    //         if (isDensityMetric) return v * 100; // per ha → per km²
+    //         return v;
+    //     };
+
+    //     const t = setTimeout(() => {
+    //         onChomeRangeChange(chomeTarget, toProp(rawMin), toProp(rawMax));
+    //     }, 200);
+    //     return () => clearTimeout(t);
+
+    // }, [chomeFiltersOpen, chomeTarget, chomeMin, chomeMax]);
+
+    // useEffect(() => {
+    //     if (chomeMethod !== "manual") return;
+    //     setManualBreaksByMetric((prev) => {
+    //         const need = Math.max(0, chomeBins - 1);
+    //         const curr = prev[chomeTarget] ?? [];
+    //         const next = Array.from({ length: need }, (_, i) => curr[i] ?? "");
+    //         return { ...prev, [chomeTarget]: next };
+    //     });
+    // }, [chomeMethod, chomeTarget, chomeBins]);
+
+
+    // useEffect(() => {
+    //     if (!chomeFiltersOpen) return;
+    //     onChomeLabelsChange(chomeLabelsOn, chomeLabelsMode, chomeLabelsMetric);
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [chomeFiltersOpen, chomeLabelsOn, chomeLabelsMode, chomeLabelsMetric]);
 
     const metricLabels: Record<string, string> = {
         PTN_2020: '総人口（2020年）',
@@ -684,25 +684,25 @@ export default function MapControls({
 
         toggleFunction();
     }
-    const anyChomeLayerOn =
-        chomeTotalVisible ||
-        chomeAgingVisible ||
-        chomeDensityVisible ||
-        chomeTotal2040Visible ||
-        chomeAging2040Visible;
+    // const anyChomeLayerOn =
+    //     chomeTotalVisible ||
+    //     chomeAgingVisible ||
+    //     chomeDensityVisible ||
+    //     chomeTotal2040Visible ||
+    //     chomeAging2040Visible;
 
-    const anyPassengerCircleOn =
-        sakaeCourseRideLayerVisible ||
-        sakaeCourseDropLayerVisible ||
-        masuoCourseRideLayerVisible ||
-        masuoCourseDropLayerVisible ||
-        shonanCourseRideLayerVisible ||
-        shonanCourseDropLayerVisible ||
-        // ✅ include Wani (市役所線)
-        waniOutboundRideLayerVisible ||
-        waniOutboundDropLayerVisible ||
-        waniReturnRideLayerVisible ||
-        waniReturnDropLayerVisible;
+    // const anyPassengerCircleOn =
+    //     sakaeCourseRideLayerVisible ||
+    //     sakaeCourseDropLayerVisible ||
+    //     masuoCourseRideLayerVisible ||
+    //     masuoCourseDropLayerVisible ||
+    //     shonanCourseRideLayerVisible ||
+    //     shonanCourseDropLayerVisible ||
+    //     // ✅ include Wani (市役所線)
+    //     waniOutboundRideLayerVisible ||
+    //     waniOutboundDropLayerVisible ||
+    //     waniReturnRideLayerVisible ||
+    //     waniReturnDropLayerVisible;
 
     return (
         <div data-map-controls className="absolute right-3 top-3 z-10 max-h-screen w-fit flex flex-col items-end">

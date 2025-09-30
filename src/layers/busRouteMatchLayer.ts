@@ -1,5 +1,5 @@
 // src/layers/busRoutesLinkedLayer.ts
-import { blobUrl } from "@/lib/blobUrl";
+// import { blobUrl } from "@/lib/blobUrl";
 import type maplibregl from "maplibre-gl";
 
 const SRC_ID = "bus-routes-linked-src";

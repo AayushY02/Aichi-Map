@@ -630,24 +630,24 @@ function setVis(map: maplibregl.Map, id: string, on: boolean) {
   map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
 }
 
-function featureToPointCoordLoose(g: any): [number, number] | null {
-  if (!g) return null;
-  if (g.type === "Point") return g.coordinates as [number, number];
-  if (g.type === "MultiPoint") return (g.coordinates?.[0] as [number, number]) ?? null;
-  if (g.type === "LineString" || g.type === "MultiLineString") {
-    const coords: [number, number][] = g.type === "LineString" ? g.coordinates : g.coordinates.flat();
-    if (!coords?.length) return null;
-    let minX = coords[0][0], maxX = coords[0][0], minY = coords[0][1], maxY = coords[0][1];
-    for (const [x, y] of coords) {
-      if (x < minX) minX = x;
-      if (x > maxX) maxX = x;
-      if (y < minY) minY = y;
-      if (y > maxY) maxY = y;
-    }
-    return [(minX + maxX) / 2, (minY + maxY) / 2];
-  }
-  return null;
-}
+// function featureToPointCoordLoose(g: any): [number, number] | null {
+//   if (!g) return null;
+//   if (g.type === "Point") return g.coordinates as [number, number];
+//   if (g.type === "MultiPoint") return (g.coordinates?.[0] as [number, number]) ?? null;
+//   if (g.type === "LineString" || g.type === "MultiLineString") {
+//     const coords: [number, number][] = g.type === "LineString" ? g.coordinates : g.coordinates.flat();
+//     if (!coords?.length) return null;
+//     let minX = coords[0][0], maxX = coords[0][0], minY = coords[0][1], maxY = coords[0][1];
+//     for (const [x, y] of coords) {
+//       if (x < minX) minX = x;
+//       if (x > maxX) maxX = x;
+//       if (y < minY) minY = y;
+//       if (y > maxY) maxY = y;
+//     }
+//     return [(minX + maxX) / 2, (minY + maxY) / 2];
+//   }
+//   return null;
+// }
 
 type AnyInteractLayerId =
   | "rail-jr-base" | "rail-jr-dash"
