@@ -463,7 +463,6 @@ export default function MapControls({
                                 <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
                                     {[
                                         { label: '交通レイヤー', checked: transportVisible, onChange: () => handleLayerToggle('交通レイヤー', transportVisible, toggleTransport), icon: <Bus size={16} /> },
-                                        { label: 'バス停', checked: busStopsVisible, onChange: () => handleLayerToggle('バス停', busStopsVisible, toggleBusStops), icon: <MapPin size={16} /> },
                                       
                                         {
                                             label: 'バス停（点）',

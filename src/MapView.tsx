@@ -11,13 +11,10 @@ import { JAPAN_BOUNDS, NAGAKUTE_BOUNDS, AICHI_BOUNDS } from './constants/bounds'
 import { getColorExpression } from './utils/expressions';
 import { addMeshLayers } from './layers/meshLayers';
 import { toggleAdminBoundaries } from './layers/adminBoundaries';
-// import { toggleTerrain } from './layers/terrain';
 import { toggleAgriLayer } from './layers/agriLayer';
 import LoadingOverlay from './components/LoadingOverlay';
 import MapControls from './components/MapControls';
 import { useRecoilState, useRecoilValue } from 'recoil';
-// import { selectedMeshIdState } from './state/meshSelection';
-import ChatPanel from './components/ChatPanel';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toggleAlightingLayer, toggleBoardingLayer, toggleBusStops, toggleTransportationLayer } from './layers/transportationLayer';
 import { togglePublicFacilityLayer } from './layers/publicFacilityLayer';
@@ -66,17 +63,8 @@ import { DEFAULT_FREQ_STYLE, FreqStyleConfig, FrequencyDay, toggleBusRoutesFrequ
 import BusFrequencyLegend from './components/Legend/BusFrequencyLegend';
 import { userLayersPanelOpenAtom } from './state/uiAtoms';
 import UserLayersPanel from './components/UserLayersPanel';
-import { AI_MESH_BASE, AI_MESH_FILL, AI_MESH_LINE, clearAllFeatureStates, enableShiftDragBox, ensureAiMeshLayers, setAiMeshSourceData, toggleFeatureState } from './layers/aiMesh';
-import { buildMeshForBounds, coverBox } from './lib/mesh250';
-import { AskAiToolbar } from './components/AskAiToolbar';
-// mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
+import { ensureAiMeshLayers, toggleFeatureState } from './layers/aiMesh';
 
-// const FACILITIES_URL = "/data/kashiwa_public_facilities_new.geojson";
-// const SHOPS_URL = "/data/kashiwa_shops.geojson";
-
-// Optional: if your generated filenames are different, just change the strings above.
-// e.g. "/data/kashiwa_public_facilities.from_csv.no_duplicated_firstcol.name_fixed.geojson"
-//      "/data/kashiwa_shops.from_csv.structured_with_legend_no.geojson"
 
 type FC = GeoJSON.FeatureCollection<GeoJSON.Geometry, Record<string, any>>;
 
@@ -183,9 +171,8 @@ export default function MapView() {
     const [chomeAging2040Visible, setChomeAging2040Visible] = useState(false);
 
     // const 
-    const [selectedMeshIds, setSelectedMeshIds] = useState<string[]>([]);
+
     const selectedIdsRef = useRef<string[]>([]);
-    useEffect(() => { selectedIdsRef.current = selectedMeshIds; }, [selectedMeshIds]);
 
     const [passengerLabelsVisible, setPassengerLabelsVisible] = useState(false);
 
@@ -227,10 +214,6 @@ export default function MapView() {
     const facilityLegendOpen = useRecoilValue(facilityLegendTableOpenState);
     const shopLegendOpen = useRecoilValue(shopLegendTableOpenState);
 
-    const [askMode, setAskMode] = useState(false);
-    const [chatOpen, setChatOpen] = useState(false);
-    const [aiBusy, setAiBusy] = useState(false);
-
     const [busRoutesHighlightedVisible, setBusRoutesHighlightedVisible] = useState(false);
 
     const [stationPassengersVisible, setStationPassengersVisible] = useState(false);
@@ -251,15 +234,6 @@ export default function MapView() {
         mapRef.current &&
             toggleChibaRoadsLayer(mapRef.current, chibaRoadsVisible, setIsLoading, setChibaRoadsVisible);
     }
-
-    // const opts = {
-    //     timeBand: odGridFilterOn ? [odGridHour, odGridHour + 1] as [number, number] : null,
-    //     showGrid: odGridShowGrid,
-    //     undirected: odGridUndirected,
-    //     minVolThreshold: odGridMinVol,  // keep existing
-    //     focusMode: odGridFocusMode,     // keep existing
-    //     showStops: odGridShowStops,     // <-- NEW
-    // };
 
     type ChomeMetric = "total" | "aging" | "density" | "total_2040" | "aging_2040";
     const hasAnyBusLegend = [
@@ -282,32 +256,6 @@ export default function MapView() {
     // const hasAnyOtherLegend = someOtherLegendVisible || anotherLegendVisible;
 
     type BoolSetter = React.Dispatch<React.SetStateAction<boolean>>;
-
-    const bumpAiMeshToTop = useCallback(() => {
-        const map = mapRef.current; if (!map) return;
-        const style = map.getStyle?.(); const layers = style?.layers ?? [];
-        const ids = [AI_MESH_BASE, AI_MESH_FILL, AI_MESH_LINE].filter(id => map.getLayer(id));
-
-        if (!ids.length) return;
-
-        // prevent churn if already last in order
-        // const order: Map<string, number> = new Map();
-        const order = new window.Map<string, number>();
-        layers.forEach((l, i) => order.set(l.id, i));
-        const lastIndex = layers.length - 1;
-        const alreadyTop =
-            (ids.length === 3 &&
-                order.get(AI_MESH_BASE) === lastIndex - 2 &&
-                order.get(AI_MESH_FILL) === lastIndex - 1 &&
-                order.get(AI_MESH_LINE) === lastIndex) ||
-            (ids.length === 2 &&
-                order.get(ids[0]!) === lastIndex - 1 &&
-                order.get(ids[1]!) === lastIndex);
-
-        if (alreadyTop) return;
-
-        for (const id of ids) { try { map.moveLayer(id); } catch { } }
-    }, []);
 
 
     // Keep only *layer* visibility setters here (no UI flags like chatOpen/isLoading)
@@ -409,11 +357,6 @@ export default function MapView() {
         applyMeshVisibility(meshVisible);
     }, [applyMeshVisibility, getMeshLayerIds, meshVisible, selectedMetric]);
 
-    // useEffect(() => {
-    //     if (mapRef.current && kashiwaFacilityLabelsVisible) {
-    //         updateKashiwaPublicFacilityLabelsFilter(mapRef.current, selectedCategories);
-    //     }
-    // }, [selectedCategories, kashiwaFacilityLabelsVisible]);
 
     const onToggleFacilityLabels = () => {
         if (!mapRef.current) return;
@@ -711,114 +654,7 @@ export default function MapView() {
         }
     }, [selectedCategories]);
 
-    // useEffect(() => {
-    //     if (mapRef.current) {
-    //         toggleKashiwaShopsLayer(mapRef.current, kashiwaShopsVisible, setIsLoading, setKashiwaShopsVisible, selectedShopCategories);
-    //     }
-    // }, [selectedShopCategories]);
-
-    // useEffect(() => {
-    //     const map = mapRef.current;
-    //     if (!map) return;
-
-    //     // circle layers that must sit above routes
-    //     const CIRCLE_IDS = [
-    //         "sakae-course-ride",
-    //         "sakae-course-drop",
-    //         "masuo-course-ride",
-    //         "masuo-course-drop",
-    //         "shonan-course-ride",
-    //         "shonan-course-drop",
-    //         "wani-outbound-ride",
-    //         "wani-outbound-drop",
-    //         "wani-return-ride",
-    //         "wani-return-drop",
-    //         // optionally:
-    //         "bus-layer",
-    //     ] as const;
-
-    //     // Internal trackers stored on the map instance (persist through re-renders)
-    //     const M = map as any;
-    //     if (!M.__circleBump) {
-    //         M.__circleBump = {
-    //             bumped: new Set<string>(),
-    //             lastLayerCount: -1,
-    //             bumpAll: () => {
-    //                 // move every existing circle to the very top (order in CIRCLE_IDS decides final top order)
-    //                 for (const id of CIRCLE_IDS) {
-    //                     if (map.getLayer(id)) {
-    //                         try { map.moveLayer(id); } catch { }
-    //                     }
-    //                 }
-    //             },
-    //             bumpNewOnes: () => {
-    //                 // only move circles we haven't bumped yet (cheap)
-    //                 for (const id of CIRCLE_IDS) {
-    //                     if (map.getLayer(id) && !M.__circleBump.bumped.has(id)) {
-    //                         try { map.moveLayer(id); } catch { }
-    //                         M.__circleBump.bumped.add(id);
-    //                     }
-    //                 }
-    //             }
-    //         };
-    //     }
-
-    //     // run once now
-    //     M.__circleBump.bumpNewOnes();
-
-    //     // When the style definition itself changes (style reload),
-    //     // reset our cache so we bump once again for newly recreated layers.
-    //     const onStyleData = (e: any) => {
-    //         if (e?.dataType === "style") {
-    //             M.__circleBump.bumped.clear();
-    //             M.__circleBump.lastLayerCount = -1;
-    //         }
-    //     };
-
-    //     // On idle, only bump if the layer count changed since last time.
-    //     const onIdle = () => {
-    //         const layers = map.getStyle()?.layers ?? [];
-    //         const count = layers.length;
-    //         if (count !== M.__circleBump.lastLayerCount) {
-    //             // Layer stack changed (someone added/removed a layer)
-    //             M.__circleBump.lastLayerCount = count;
-
-    //             // Bring any newly seen circle to top once
-    //             M.__circleBump.bumpNewOnes();
-
-    //             // Also reassert circle top order once after any stack change,
-    //             // so circles remain above any newly added route lines.
-    //             M.__circleBump.bumpAll();
-    //         }
-    //     };
-
-    //     map.on("styledata", onStyleData);
-    //     map.on("idle", onIdle);
-
-    //     return () => {
-    //         map.off("styledata", onStyleData);
-    //         map.off("idle", onIdle);
-    //     };
-    // }, []);
-
-    // const ROAD_LAYER_IDS = [
-    //     'road', 'road-street', 'road-street-low', 'road-secondary-tertiary',
-    //     'road-primary', 'road-trunk', 'road-motorway', 'road-rail', 'road-path', 'road-network'
-    // ];
-
-    // const toggleRoads = () => {
-    //     const map = mapRef.current;
-    //     if (!map) return;
-    //     const visibility = roadsVisible ? 'none' : 'visible';
-    //     ROAD_LAYER_IDS.forEach(id => {
-    //         if (map.getLayer(id)) {
-    //             map.setLayoutProperty(id, 'visibility', visibility);
-    //         }
-    //     });
-    //     setRoadsVisible(!roadsVisible);
-    // };
-
-
+  
     // Detect road layers (strokes + optional labels) from the *current* style
     function getRoadLayerIds(map: maplibregl.Map) {
         const layers = map.getStyle().layers ?? [];
@@ -893,11 +729,6 @@ export default function MapView() {
     };
 
     const fitBoundsToKashiwa = () => {
-        // const map = mapRef.current;
-        // if (!map) return;
-        // map.fitBounds([[139.935, 35.825], [140.05, 35.91]], { padding: 40, duration: 1000 });
-
-        // map.setMaxBounds(KASHIWA_BOUNDS)
 
         const map = mapRef.current;
         if (!map) return;
@@ -965,120 +796,6 @@ export default function MapView() {
         map.triggerRepaint();
     }
 
-    // async function loadViewportMesh(map: maplibregl.Map) {
-    //     setAiBusy(true);
-    //     try {
-    //         if (map.getZoom() < 13) {
-    //             (map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource | undefined)
-    //                 ?.setData({ type: 'FeatureCollection', features: [] });
-    //             setSelectedMeshIds([]);
-    //             return;
-    //         }
-    //         const b = map.getBounds();
-    //         const { features, tooMany } = buildMeshForBounds(
-    //             { west: b.getWest(), south: b.getSouth(), east: b.getEast(), north: b.getNorth() },
-    //             20000
-    //         );
-    //         if (tooMany) {
-    //             (map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource)
-    //                 .setData({ type: 'FeatureCollection', features: [] });
-    //             setSelectedMeshIds([]);
-    //             return;
-    //         }
-    //         ensureAiMeshLayers(map);
-    //         setAiMeshSourceData(map, features as any);
-    //         // map.triggerRepaint();
-    //         clearAllFeatureStates(map);
-    //         setSelectedMeshIds([]);
-    //         bumpAiMeshToTop();
-    //     } finally {
-    //         setAiBusy(false);
-    //     }
-    // }
-
-    // async function loadViewportMesh(map: maplibregl.Map) {
-    //     setAiBusy(true);
-    //     try {
-    //         const z = map.getZoom();
-
-    //         // If very zoomed out, keep selection in memory but don't draw cells (source empty).
-    //         if (z < 13) {
-    //             const src = map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource | undefined;
-    //             src?.setData({ type: 'FeatureCollection', features: [] });
-    //             // 🔴 DO NOT clear selected ids here — keep user's selection sticky.
-    //             // setSelectedMeshIds([]);  <-- remove this line
-    //             // clearAllFeatureStates(map); <-- not needed; there are no features drawn anyway
-    //             return;
-    //         }
-
-    //         // Build fresh cells for the viewport
-    //         const b = map.getBounds();
-    //         const { features, tooMany } = buildMeshForBounds(
-    //             { west: b.getWest(), south: b.getSouth(), east: b.getEast(), north: b.getNorth() },
-    //             20000
-    //         );
-
-    //         if (tooMany) {
-    //             (map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource)
-    //                 .setData({ type: 'FeatureCollection', features: [] });
-    //             // keep selection list; it will re-highlight when zoomed in again
-    //             return;
-    //         }
-
-    //         ensureAiMeshLayers(map);
-    //         setAiMeshSourceData(map, features as any);
-    //         bumpAiMeshToTop();
-
-    //         // ✅ Re-apply selection highlight to anything we still have selected
-    //         for (const id of selectedIdsRef.current) {
-    //             toggleFeatureState(map, id, true);
-    //         }
-    //     } finally {
-    //         setAiBusy(false);
-    //     }
-    // }
-
-    async function loadViewportMesh(map: maplibregl.Map) {
-        setAiBusy(true);
-        try {
-            const z = map.getZoom();
-
-            // When zoomed out, don’t nuke selection — just hide the mesh
-            if (z < 13) {
-                (map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource | undefined)
-                    ?.setData({ type: 'FeatureCollection', features: [] });
-                return; // ← keep selectedMeshIds as-is
-            }
-
-            const b = map.getBounds();
-            const { features, tooMany } = buildMeshForBounds(
-                { west: b.getWest(), south: b.getSouth(), east: b.getEast(), north: b.getNorth() },
-                20000
-            );
-
-            if (tooMany) {
-                (map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource)
-                    .setData({ type: 'FeatureCollection', features: [] });
-                return; // ← keep selection list; try again after user zooms in
-            }
-
-            // ✅ build layers + feed data
-            ensureAiMeshLayers(map);
-            setAiMeshSourceData(map, features as any);
-            bumpAiMeshToTop();
-
-            // ✅ re-apply highlight for whatever is already selected
-            for (const id of selectedIdsRef.current) {
-                toggleFeatureState(map, id, true);
-            }
-        } finally {
-            setAiBusy(false);
-        }
-    }
-
-
-
-
     const handleStyleChange = (styleUrl: string) => {
         const map = mapRef.current;
         if (!map) return;
@@ -1088,7 +805,6 @@ export default function MapView() {
         setSelectedMetric(nextMetric);
 
         setAllLayersVisibility(false);
-        setChatOpen(false);
 
         map.setStyle(styleUrl);
 
@@ -1116,12 +832,6 @@ export default function MapView() {
         });
     }
 
-    // function meshLevelFromLayerId(id: string): "250m" | null {
-    //     // if (id.includes("1km")) return "1km";
-    //     // if (id.includes("500m")) return "500m";
-    //     if (id.includes("250m")) return "250m";
-    //     return null;
-    // }
     useEffect(() => {
         selectedMetricRef.current = selectedMetric;
     }, [selectedMetric]);
@@ -1136,7 +846,6 @@ export default function MapView() {
             const detail = (e as CustomEvent).detail as { meshId: string; meshLevel: "250m" };
             if (!detail?.meshId || !detail?.meshLevel) return;
             setChatMeshRef({ id: detail.meshId, level: detail.meshLevel });   // NEW
-            setChatOpen(true);
         };
         window.addEventListener('mirai:ask', handleAskMirai);
         return () => window.removeEventListener('mirai:ask', handleAskMirai);
@@ -1149,61 +858,9 @@ export default function MapView() {
         }
     }, [cityMaskOpacity, cityMaskVisible]);
 
-    useEffect(() => {
-        const map = mapRef.current;
-        if (!map) return;
+   
 
-        if (askMode) {
-            loadViewportMesh(map);
-            const onMoveEnd = () => loadViewportMesh(map);
-            map.on('moveend', onMoveEnd);
-            return () => { map.off('moveend', onMoveEnd); };
-        } else {
-            const src = map.getSource('ai-mesh-src') as maplibregl.GeoJSONSource | undefined;
-            if (src) src.setData({ type: 'FeatureCollection', features: [] });
-            setSelectedMeshIds([]);
-        }
-    }, [askMode]);
-
-    const dragBoxCleanupRef = useRef<(() => void) | null>(null);
-
-    // when map is ready (inside your map.on('load', ...) or after you call ensureAiMeshLayers)
-    useEffect(() => {
-        const map = mapRef.current;
-        if (!map) return;
-
-        // whenever askMode flips, manage the SHIFT+drag selection tool
-        if (askMode) {
-            // create it
-            dragBoxCleanupRef.current = enableShiftDragBox(map, async (poly) => {
-                // your existing onComplete callback body:
-                const r = coverBox(poly, /* maxCells */ 200000);
-                if (r.tooMany) return;
-                setSelectedMeshIds(prev => {
-                    const merged = new Set(prev);
-                    for (const id of r.meshIds) {
-                        merged.add(id);
-                        toggleFeatureState(map, id, true);
-                    }
-                    return Array.from(merged);
-                });
-            });
-        } else {
-            // dispose it if it exists
-            if (dragBoxCleanupRef.current) {
-                dragBoxCleanupRef.current();
-                dragBoxCleanupRef.current = null;
-            }
-        }
-
-        // also dispose on unmount
-        return () => {
-            if (dragBoxCleanupRef.current) {
-                dragBoxCleanupRef.current();
-                dragBoxCleanupRef.current = null;
-            }
-        };
-    }, [askMode]);  // <-- important
+ 
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
@@ -1221,47 +878,9 @@ export default function MapView() {
             maxBounds: JAPAN_BOUNDS,
         });
 
-
-
-        // const ensureHighlightLayer = () => {
-        //     if (map.getSource('clicked-mesh')) return;   // already present
-
-        //     map.addSource('clicked-mesh', {
-        //         type: 'geojson',
-        //         data: { type: 'FeatureCollection', features: [] },
-        //     });
-
-        //     map.addLayer({
-        //         id: 'clicked-mesh-fill',
-        //         type: 'fill',
-        //         source: 'clicked-mesh',
-        //         paint: { 'fill-color': '#ff0000', 'fill-opacity': 0.65 },
-        //     });
-        //     map.addLayer({
-        //         id: 'clicked-mesh-line',
-        //         type: 'line',
-        //         source: 'clicked-mesh',
-        //         paint: { 'line-color': '#ff0000', 'line-width': 2 },
-        //     });
-        // };
-
         mapRef.current = map;
 
-        const clickMesh = (e: maplibregl.MapLayerMouseEvent & { originalEvent: MouseEvent }) => {
-            if (!askMode) return;
-            const f = e.features?.[0];
-            if (!f) return;
-
-            const meshId = (f.id != null ? String(f.id) : (f.properties as any)?.mesh_id) as string | undefined;
-            if (!meshId) return;
-
-            setSelectedMeshIds(prev => {
-                const has = prev.includes(meshId);
-                const next = has ? prev.filter(id => id !== meshId) : [...prev, meshId];
-                toggleFeatureState(mapRef.current!, meshId, !has); // ← instant visual
-                return next;
-            });
-        };
+    
 
         map.on('load', () => {
 
@@ -1276,63 +895,15 @@ export default function MapView() {
             });
 
             rebuildMeshLayers();                 // ← replace addMeshLayers + manual color with this
-            // ensureHighlightLayer();
             ensureAiMeshLayers(map)
-
-            map.on('click', AI_MESH_BASE, clickMesh);
-            map.on('click', AI_MESH_FILL, clickMesh);
-            map.on('click', AI_MESH_LINE, clickMesh);
-            bumpAiMeshToTop()
-
-
-
-            map.on('mousemove', AI_MESH_FILL, () => { map.getCanvas().style.cursor = 'pointer'; });
-            map.on('mouseleave', AI_MESH_FILL, () => { map.getCanvas().style.cursor = ''; });
-
-            // const clickMesh = (e: maplibregl.MapLayerMouseEvent & { originalEvent: MouseEvent }) => {
-            //     if (!askMode) return;
-            //     const f = e.features?.[0];
-            //     if (!f) return;
-
-            //     // Always prefer the promoted id; fallback to property
-            //     const meshId = (f.id != null ? String(f.id) : (f.properties as any)?.mesh_id) as string | undefined;
-            //     if (!meshId) return;
-
-            //     setSelectedMeshIds(prev => {
-            //         const has = prev.includes(meshId);
-            //         const next = has ? prev.filter(id => id !== meshId) : [...prev, meshId];
-            //         toggleFeatureState(mapRef.current!, meshId, !has);
-            //         return next;
-            //     });
-            // };
-            // map.on('click', AI_MESH_FILL, clickMesh);
-            // map.on('click', AI_MESH_LINE, clickMesh);
-
-
-
-
-            // SHIFT + drag multi-select
-
-
-            // keep AI mesh on top whenever style/layers change
-            map.on('styledata', bumpAiMeshToTop);
-
-
             wireBusRoutesHover(map, transportPopupRef);
-
             map.once('idle', () => setIsLoading(false));
-
-
 
         });
 
         map.on('style.load', () => {
             rebuildMeshLayers();                 // ← guarantees meshes come back for the new style
-            // ensureHighlightLayer();
             ensureAiMeshLayers(map);
-
-
-            bumpAiMeshToTop();
 
             for (const id of selectedIdsRef.current) {
                 toggleFeatureState(map, id, true);
@@ -1342,108 +913,6 @@ export default function MapView() {
                 map.setMaxBounds(clampRef.current);
             }
         });
-
-        // const showPopup = (e: maplibregl.MapMouseEvent) => {
-        //     const feature = e.features?.[0];
-        //     if (!feature) return;
-
-        //     map.getCanvas().style.cursor = 'pointer';
-        //     const metric = selectedMetricRef.current;
-
-        //     const value = metric === 'ELDERLY_RATIO'
-        //         ? ((feature.properties?.PTC_2020 / feature.properties?.PTN_2020) * 100).toFixed(1) + '%'
-        //         : feature.properties?.[metric] ?? 'N/A';
-
-        //     const label = {
-        //         PTN_2020: '総人口（2020年）',
-        //         PTA_2020: '0〜14歳の人口（2020年）',
-        //         PTC_2020: '65歳以上の人口（2020年）',
-        //         ELDERLY_RATIO: '高齢者比率（65歳以上／総人口）'
-        //     }[metric];
-
-        //     popupRef.setLngLat(e.lngLat).setHTML(`<strong>${label}:</strong> ${value}`).addTo(map);
-        // };
-
-        // ['mesh-1km-fill', 'mesh-500m-fill', 'mesh-250m-fill'].forEach(layer => {
-        //     map.on('mousemove', layer, showPopup);
-        //     map.on('mouseleave', layer, () => {
-        //         map.getCanvas().style.cursor = '';
-        //         popupRef.remove();
-        //     });
-        // });
-
-        //     ['mesh-500m-fill', 'mesh-1km-fill', 'mesh-250m-fill'].forEach(layer => {
-        //         map.on('click', layer, e => {
-        //             const feature = e.features?.[0];
-        //             if (!feature) return;
-
-        //             const meshId = feature.properties?.MESH_ID as string | undefined;
-        //             if (!meshId) return;
-
-        //             const meshLevel = meshLevelFromLayerId(feature.layer.id!);
-        //             if (!meshLevel) return;
-
-        //             // 1️⃣ Update global state (Recoil)
-        //             setSelectedMeshId(meshId);
-
-        //             // 2️⃣ Highlight the clicked mesh
-        //             ensureHighlightLayer();
-        //             const geojson: GeoJSON.FeatureCollection = {
-        //                 type: 'FeatureCollection',
-        //                 features: [
-        //                     {
-        //                         ...(feature.toJSON ? feature.toJSON() : (feature as any)),
-        //                         id: meshId,
-        //                     },
-        //                 ],
-        //             };
-        //             (map.getSource('clicked-mesh') as maplibregl.GeoJSONSource).setData(geojson);
-
-        //             // 3️⃣ Show / update the *selection* popup with the "Ask Mirai AI" button
-        //             if (selectionPopupRef.current) {
-        //                 selectionPopupRef.current.remove();
-        //             }
-
-        //             const selectionPopup = new maplibregl.Popup({ closeButton: false, offset: 0, className: "ai-popup" })
-        //                 .setLngLat(e.lngLat)
-        //                 .setHTML(
-        //                     `
-        //                     <div class="rounded-xl border bg-white p-4 shadow-xl space-y-2 w-40">
-        //   <div class="text-sm font-semibold text-gray-900">Mesh ID : <span class="text-base text-muted-foreground">${meshId}</span> </div>
-
-        //   <button
-        //     id="ask-mirai-btn"
-        //     class="inline-flex items-center w-full justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus:outline-none"
-        //   >
-        //    ミライに聞く
-        //   </button>
-        // </div>
-        //                     `,
-        //                 )
-        //                 .addTo(map);
-
-        //             selectionPopupRef.current = selectionPopup;
-
-        //             // Optional: wire up an event handler for the button
-        //             const popupElement = selectionPopup.getElement();
-        //             const askBtn = popupElement?.querySelector<HTMLButtonElement>('#ask-mirai-btn');
-
-        //             askBtn?.addEventListener('click', () => {
-        //                 window.dispatchEvent(
-        //                     new CustomEvent('mirai:ask', {
-        //                         detail: { meshId, meshLevel },
-        //                     }),
-        //                 );
-        //                 // optionally close popup
-        //                 selectionPopupRef.current?.remove();
-        //             });
-
-        //         });
-        //     });
-
-        /**
-         * ===== Extra interactions for agricultural layer =====
-         */
 
         map.on('mousemove', 'agri-fill', (e) => {
             const feature = e.features?.[0];
@@ -2635,35 +2104,6 @@ export default function MapView() {
         <div className="relative w-screen h-screen">
             {isLoading && <LoadingOverlay />}
 
-            <AnimatePresence>
-                {chatOpen && (
-                    <motion.div
-                        key="chat-container"
-                        initial={{ x: -400, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -400, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="absolute top-0 left-0 z-[60] h-full w-[400px]" /* raise z just in case */
-                    >
-                        <ChatPanel
-                            meshIds={selectedMeshIds}         // uses whatever is currently selected
-                            onClose={() => setChatOpen(false)}
-                        />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            <AskAiToolbar
-                active={askMode}
-                selectedCount={selectedMeshIds.length}
-                onToggle={() => setAskMode(v => !v)}
-                onClear={() => {
-                    const m = mapRef.current;
-                    if (m) { clearAllFeatureStates(m); setSelectedMeshIds([]); }
-                }}
-                onOpenChat={() => setChatOpen(true)}
-                disabled={aiBusy}
-            />
             <MapControls
                 currentStyle={currentStyle}
                 onStyleChange={handleStyleChange}
@@ -3260,7 +2700,7 @@ export default function MapView() {
             <h1 className={`absolute top-3 left-3 z-10 ${currentStyle === MAP_STYLES.ダーク ? "text-white" : "text-black"} text-lg font-mono rounded-2xl`}>
                 FrameArk 1.0 Beta
             </h1>
-            {!chatOpen && !chatMeshRef && (
+            {!chatMeshRef && (
                 <Card className='absolute bottom-10 right-3 z-10 text-black font-extrabold bg-white p-3 rounded-2xl'>
                     <h1>{cardTitle}</h1>
                 </Card>
