@@ -23,7 +23,6 @@ import {
     Bus,
     School,
     Hospital,
-    Users,
     X,
     Menu,
     BusFront,
@@ -326,11 +325,6 @@ export default function MapControls({
     toggleRailStationsVisible,
     stationCoverageVisible,
     toggleStationCoverageVisible,
-
-
-
-    stationPassengersVisible,
-    toggleStationPassengersVisible,
 
     subdivisionsVisible,
     toggleSubdivisionsVisible,
