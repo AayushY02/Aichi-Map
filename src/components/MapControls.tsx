@@ -300,8 +300,6 @@ export default function MapControls({
     toggleMedicalLayer,
     roadsideStationLayerVisible,
     toggleRoadsideStationLayerVisible,
-    busStopsVisible,
-    toggleBusStops,
     toggleAttractionLayer,
     attractionLayerVisible,
     downloadPpt,
@@ -550,13 +548,7 @@ export default function MapControls({
                                                 handleLayerToggle("駅カバレッジ（800m/1km）", stationCoverageVisible, toggleStationCoverageVisible),
                                             icon: <Landmark size={16} />,
                                         },
-                                        {
-                                            label: "鉄道駅（利用者数の円）",
-                                            checked: stationPassengersVisible,
-                                            onChange: () =>
-                                                handleLayerToggle("鉄道駅（利用者数）", stationPassengersVisible, toggleStationPassengersVisible),
-                                            icon: <Users size={16} />,
-                                        },
+                                        
                                     ].map(({ label, checked, onChange, icon }) => (
                                         <div key={label} className="flex items-center justify-between">
                                             <Label className="text-sm text-black flex items-center gap-2">{icon} {label}</Label>
