@@ -47,3 +47,6 @@ dist-ssr
 /public/data/population.geojson
 /public/data/administration.geojson
 
+
+/public/data/administration_prefecture.geojson
+
