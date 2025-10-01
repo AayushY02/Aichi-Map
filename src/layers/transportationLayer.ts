@@ -36,7 +36,7 @@ export const toggleTransportationLayer = (
     // const tilesetUrl = 'mapbox://frame-ark.transportation';
     // const sourceLayer = 'transportation';
     // const DATA_URL = blobUrl("transportation.geojson");
-    const DATA_URL = "/data/bus_route_2.geojson";
+    const DATA_URL = "/data/bus_route.geojson";
 
 
     const labelLayerId = map.getStyle().layers?.find(
