@@ -2331,7 +2331,7 @@ export default function MapView() {
         // you can add more cases here, e.g.:
         // if (adminVisible) return '行政界データ';
         // if (terrainEnabled) return '地形データ';
-        return '2020年の人口推計データ';
+        return '2025年の人口推計データ';
     })();
 
     // metric = "total" | "aging" | "density"

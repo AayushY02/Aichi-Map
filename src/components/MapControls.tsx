@@ -1743,10 +1743,10 @@ export default function MapControls({
                                 <SelectValue placeholder="表示する人口指標" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="PTN_2020">総人口（2020年）</SelectItem>
-                                <SelectItem value="PTC_2020">65歳以上の人口（2020年）</SelectItem>
-                                <SelectItem value="PTA_2020">0〜14歳の人口（2020年）</SelectItem>
-                                <SelectItem value="ELDERLY_RATIO">高齢者比率（65歳以上／総人口）</SelectItem>
+                                <SelectItem value="PTN_2025">総人口（2025年）</SelectItem>
+                                <SelectItem value="PTC_2025">65歳以上の人口（2025年）</SelectItem>
+                                <SelectItem value="PTA_2025">0〜14歳の人口（2025年）</SelectItem>
+                                <SelectItem value="RTC_2025">高齢者比率（65歳以上／総人口）（2025年）</SelectItem>
                             </SelectContent>
                         </Select>
 
@@ -1759,7 +1759,7 @@ export default function MapControls({
                         </Button> */}
 
 
-                        <Accordion type="single" collapsible className="w-full">
+                        {/* <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="bus-frequency">
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center ">
                                     <Bus size={16} />
@@ -1767,7 +1767,6 @@ export default function MapControls({
                                 </AccordionTrigger>
 
                                 <AccordionContent className="flex flex-col space-y-3 bg-white rounded-xl mt-2 px-4 py-3">
-                                    {/* Row: toggle + day select */}
                                     <div className="flex flex-col justify-between w-full">
                                         <div className="flex justify-between space-y-4 items-center gap-2">
                                             <Label className="text-sm text-black flex items-center gap-2">
@@ -1785,7 +1784,6 @@ export default function MapControls({
                                             />
                                         </div>
 
-                                        {/* shadcn Select for day */}
                                         <div className="flex w-full justify-between items-center gap-2">
                                             <Label className="text-xs text-muted-foreground">対象日</Label>
                                             <Select
@@ -1806,7 +1804,6 @@ export default function MapControls({
                                     {busRoutesFrequencyVisible && (
                                         <>
                                             <Separator />
-                                            {/* Thresholds */}
                                             <div className="rounded-lg space-y-2">
                                                 <Label className="text-xs text-muted-foreground">レンジ区分（カンマ区切り）</Label>
                                                 <div className="flex items-center gap-2">
@@ -1826,7 +1823,6 @@ export default function MapControls({
                                                 </p>
                                             </div>
 
-                                            {/* Colors (1 per band) */}
                                             <div className="rounded-lg space-y-2">
                                                 <Label className="text-xs text-muted-foreground">色（各レンジ）</Label>
                                                 <div className="grid grid-cols-1 gap-1">
@@ -1834,7 +1830,6 @@ export default function MapControls({
                                                         <div key={i} className="flex items-center justify-between gap-3 rounded-md p-1">
                                                             <div className="text-xs text-gray-600">{bandLabel(i)}</div>
                                                             <div className="flex items-center gap-2">
-                                                                {/* hex text */}
                                                                 <Input
                                                                     value={c}
                                                                     onChange={(e) => {
@@ -1844,7 +1839,6 @@ export default function MapControls({
                                                                     }}
                                                                     className="h-8 w-28"
                                                                 />
-                                                                {/* native color input (shadcn Input styles still apply) */}
                                                                 <Input
                                                                     type="color"
                                                                     value={c}
@@ -1861,7 +1855,6 @@ export default function MapControls({
                                                 </div>
                                             </div>
 
-                                            {/* Widths + reset */}
                                             <div className="rounded-lg space-y-3">
                                                 <div className="grid grid-cols-2 gap-3">
                                                     <div>
@@ -1914,7 +1907,7 @@ export default function MapControls({
                                     )}
                                 </AccordionContent>
                             </AccordionItem>
-                        </Accordion>
+                        </Accordion> */}
 
 
 

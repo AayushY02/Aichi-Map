@@ -29,7 +29,7 @@ export const addMeshLayers = (map: maplibregl.Map, metric: string) => {
         type: 'fill',
         source: 'chiba-250m-mesh',
         // "source-layer": "mesh-250",
-        minzoom: 13.5,
+        minzoom: 6,
         paint: {
             'fill-color': getColorExpression(metric),
             'fill-opacity': 0.6
@@ -41,7 +41,7 @@ export const addMeshLayers = (map: maplibregl.Map, metric: string) => {
         type: 'line',
         source: 'chiba-250m-mesh',
         // "source-layer": "mesh-250",
-        minzoom: 13.5,
+        minzoom: 6,
         paint: { 'line-color': '#0099cc', 'line-width': 0.75 }
     });
 

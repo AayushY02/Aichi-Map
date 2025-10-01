@@ -5,8 +5,8 @@ export const getColorExpression = (metric: string): ExpressionSpecification => {
     let field: any;
     let colorStops: (string | number)[];
 
-    if (metric === 'ELDERLY_RATIO') {
-        field = ['/', ['get', 'PTC_2020'], ['get', 'PTN_2020']];
+    if (metric === 'RTC_2025') {
+        field = ['get', 'RTC_2025'];
         colorStops = [
             0, '#edf8e9',
             0.1, '#bae4b3',
@@ -14,8 +14,8 @@ export const getColorExpression = (metric: string): ExpressionSpecification => {
             0.3, '#31a354',
             0.4, '#006d2c'
         ];
-    } else if (metric === 'PTC_2020') {
-        field = ['get', 'PTC_2020'];
+    } else if (metric === 'PTC_2025') {
+        field = ['get', 'PTC_2025'];
         colorStops = [
             0, '#fff5eb',
             500, '#fd8d3c',
@@ -23,8 +23,8 @@ export const getColorExpression = (metric: string): ExpressionSpecification => {
             3000, '#d94801',
             5000, '#a63603'
         ];
-    } else if (metric === 'PTA_2020') {
-        field = ['get', 'PTA_2020'];
+    } else if (metric === 'PTA_2025') {
+        field = ['get', 'PTA_2025'];
         colorStops = [
             0, '#f7fbff',
             300, '#c6dbef',
@@ -33,7 +33,7 @@ export const getColorExpression = (metric: string): ExpressionSpecification => {
             2000, '#08306b'
         ];
     } else {
-        field = ['get', 'PTN_2020'];
+        field = ['get', 'PTN_2025'];
         colorStops = [
             0, '#ffffcc',
             500, '#a1dab4',
