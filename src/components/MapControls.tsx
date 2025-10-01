@@ -506,7 +506,7 @@ export default function MapControls({
                         <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="kashiwa-chome">
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center ">
-                                    Administration
+                                    行政区域
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
                                     {[
