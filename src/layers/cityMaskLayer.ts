@@ -208,6 +208,9 @@ export async function toggleCityMaskLayer(
             "bus-coverage-merged-fill",
             "bus-coverage-merged-line",
             "bus-coverage-stops-circle",
+            // ensure bus route lines are above the mask
+            "transportation-line",
+            "transportation-line-hover",
             // "rail-station-pax",
             // "rail-station",
             // "rail-jr-base",

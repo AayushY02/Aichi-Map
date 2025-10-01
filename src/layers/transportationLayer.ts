@@ -36,7 +36,7 @@ export const toggleTransportationLayer = (
     // const tilesetUrl = 'mapbox://frame-ark.transportation';
     // const sourceLayer = 'transportation';
     // const DATA_URL = blobUrl("transportation.geojson");
-    const DATA_URL = "/data/bus_route.geojson";
+    const DATA_URL = "/data/bus_route_2.geojson";
 
 
     const labelLayerId = map.getStyle().layers?.find(
@@ -68,8 +68,11 @@ export const toggleTransportationLayer = (
                     'line-width': 2
                 }
             }, labelLayerId);
+            // Ensure bus routes render above other overlays (and any mask)
+            try { map.moveLayer('transportation-line'); } catch {}
         } else {
             map.setLayoutProperty('transportation-line', 'visibility', 'visible');
+            try { map.moveLayer('transportation-line'); } catch {}
         }
 
         if (!map.getLayer('transportation-line-hover')) {
@@ -85,6 +88,8 @@ export const toggleTransportationLayer = (
                     'line-width': 15 // Invisible but catches mouse events
                 }
             });
+            // Keep the (invisible) hover hit area on top of the visible line
+            try { map.moveLayer('transportation-line-hover'); } catch {}
         }
 
 
