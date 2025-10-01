@@ -26,7 +26,7 @@ import { toggleAttractionLayer } from './layers/attractionLayer';
 import { toggleBusPickDropLayer } from './layers/busPickDropLayer';
 import { setAllPassengerLabelsVisible, toggleBusPassengerLayer, toggleMasuoCourseDropLayer, toggleMasuoCourseRideLayer, toggleSakaeCourseDropLayer, toggleSakaeCourseRideLayer, toggleShonanCourseDropLayer, toggleShonanCourseRideLayer, toggleWaniCityHallRouteLayer, toggleWaniOutboundDropLayer, toggleWaniOutboundRideLayer, toggleWaniReturnDropLayer, toggleWaniReturnRideLayer } from './layers/busPassengerLayer';
 import { toggleNewBusPassengerLayer, toggleNewKashiwakuruDropLayer, toggleNewKashiwakuruRideLayer } from './layers/newbusPassengerLayer';
-import { categoriesNew as categories, toggleKashiwaPublicFacilityLayer, toggleKashiwaPublicFacilityLabels} from './layers/kashiwaPublicFacilities';
+import { categoriesNew as categories, toggleKashiwaPublicFacilityLayer, toggleKashiwaPublicFacilityLabels } from './layers/kashiwaPublicFacilities';
 import { shopCategories, toggleKashiwaShopsLabels } from './layers/kashiwaShops';
 import PptxGenJS from "pptxgenjs";
 import { globalVisibleLayersState } from './state/activeLayersAtom';
@@ -206,8 +206,8 @@ export default function MapView() {
     const [railStationsVisible, setRailStationsVisible] = useState(false);
     const [stationCoverageVisible, setStationCoverageVisible] = useState(false);
 
-    const [facilityFC, ] = useState<FC | null>(null);
-    const [shopFC, ] = useState<FC | null>(null);
+    const [facilityFC,] = useState<FC | null>(null);
+    const [shopFC,] = useState<FC | null>(null);
     const [kashiwaFacilityLabelsVisible, setKashiwaFacilityLabelsVisible] = useState(false);
     const [kashiwaShopsLabelsVisible, setKashiwaShopsLabelsVisible] = useState(false);
 
@@ -654,7 +654,7 @@ export default function MapView() {
         }
     }, [selectedCategories]);
 
-  
+
     // Detect road layers (strokes + optional labels) from the *current* style
     function getRoadLayerIds(map: maplibregl.Map) {
         const layers = map.getStyle().layers ?? [];
@@ -858,9 +858,9 @@ export default function MapView() {
         }
     }, [cityMaskOpacity, cityMaskVisible]);
 
-   
 
- 
+
+
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
@@ -880,7 +880,7 @@ export default function MapView() {
 
         mapRef.current = map;
 
-    
+
 
         map.on('load', () => {
 
@@ -1704,6 +1704,12 @@ export default function MapView() {
         odGridMinVol,         // NEW
         odGridFocusMode,      // NEW
     ]);
+
+    useEffect(() => {
+        if (mapRef.current) {
+            toggleKashiwaPublicFacilityLayer(mapRef.current, kashiwaPublicFacilityVisible, setIsLoading, setKashiwaPublicFacilityVisible, selectedCategories);
+        }
+    }, [selectedCategories]);
 
     useEffect(() => {
         const map = mapRef.current;
