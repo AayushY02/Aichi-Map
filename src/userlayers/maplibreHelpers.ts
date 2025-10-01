@@ -48,6 +48,7 @@ function iconImageExpr(prop: string, iconMap: IconMap, fallbackId: string): Expr
 
 /* ---------- color/size helpers ---------- */
 function colorFor(kind: GeometryKind, s: UserGeomStyle): ExpressionSpecification | string {
+    console.log(kind)
     if (s.mode === "single") return s.color || "#3b82f6";
     if (s.mode === "categorical" && s.catProperty && s.catMapping)
         return categoricalColorExpr(s.catProperty, s.catMapping, s.catDefault || "#bdbdbd");
