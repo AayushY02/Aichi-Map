@@ -43,3 +43,7 @@ dist-ssr
 
 
 
+
+/public/data/population.geojson
+/public/data/administration.geojson
+
