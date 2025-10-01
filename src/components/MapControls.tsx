@@ -426,7 +426,7 @@ export default function MapControls({
                         </Button>
                         <Button className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer" onClick={fitToBounds}>
                             <MapPinCheckIcon />
-                            柏市にフォーカス
+                            長久手市にフォーカス
                         </Button>
 
                         <Button
@@ -441,7 +441,7 @@ export default function MapControls({
                             className="flex items-center gap-2 bg-white rounded-2xl text-black hover:bg-[#f2f2f2] cursor-pointer"
                         >
                             <MapIcon size={16} />
-                            {cityMaskVisible ? '柏市マスクを非表示' : '柏市マスクを表示'}
+                            {cityMaskVisible ? '長久手市マスクを非表示' : '長久手市マスクを表示'}
                         </Button>
 
                         <Button
@@ -545,7 +545,7 @@ export default function MapControls({
                                             icon: <MapPin size={16} />,
                                         },
                                         {
-                                            label: "駅 800m（柏/柏の葉は1km）カバレッジ",
+                                            label: "駅 800m カバレッジ",
                                             checked: stationCoverageVisible,
                                             onChange: () =>
                                                 handleLayerToggle("駅カバレッジ（800m/1km）", stationCoverageVisible, toggleStationCoverageVisible),
