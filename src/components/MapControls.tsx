@@ -562,7 +562,7 @@ export default function MapControls({
                                 <AccordionTrigger className="text-black bg-gray-50 text-sm hover:bg-gray-100 rounded-xl px-4 py-2 hover:no-underline cursor-pointer flex items-center justify-between">
                                     <div className='flex space-x-4 w-full'>
                                         <User2 size={16} />
-                                        <div>長久手市の公共施設</div>
+                                        <div>愛知県の公共施設</div>
                                     </div>
                                     {/* <button
                                         type="button"
@@ -581,8 +581,6 @@ export default function MapControls({
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-2 bg-white rounded-xl mt-2 px-4 py-2">
                                     {[
-
-
                                         { label: '全て', category: '', color: '#808080' },
                                         { label: '建物', category: '3', color: '#FF5733' },
                                         { label: 'その他', category: '9', color: '#33FF57' },
