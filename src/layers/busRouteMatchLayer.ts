@@ -11,7 +11,7 @@ const LYR_HILITE = "bus-routes-highlighted";
 
 // ⚠️ Put your file at: public/data/bus_routes_linked_p11.geojson
 // const DATA_URL = blobUrl("bus_routes_linked_p11.geojson");
-const DATA_URL = "/data/bus_route.geojson";
+const DATA_URL = "/data/bus_route_2.geojson";
 
 
 // Colors (feel free to adjust)
@@ -121,6 +121,16 @@ async function ensureSource(map: maplibregl.Map): Promise<void> {
     const resp = await fetch(DATA_URL);
     if (!resp.ok) throw new Error(`Failed to load ${DATA_URL}`);
     M.__busRoutesLinkedGeoJSON = await resp.json();
+    // Detect if data has the advanced schema (has_common_code, start/end ids, route_id)
+    try {
+      const anyFeature = Array.isArray(M.__busRoutesLinkedGeoJSON?.features)
+        ? M.__busRoutesLinkedGeoJSON.features.find((f: any) => f && f.properties)
+        : null;
+      const p = anyFeature?.properties ?? {};
+      M.__busRoutesLinkedHasSchema = (
+        'has_common_code' in p || 'route_id' in p || 'start_stop_ids' in p || 'end_stop_ids' in p
+      );
+    } catch { M.__busRoutesLinkedHasSchema = false; }
   }
 
   map.addSource(SRC_ID, {
@@ -134,22 +144,29 @@ async function ensureSource(map: maplibregl.Map): Promise<void> {
   } as any);
 }
 
+function hasAdvancedSchema(map: maplibregl.Map): boolean {
+  const M = map as any;
+  return !!M.__busRoutesLinkedHasSchema;
+}
+
 function ensureMatchedLayer(map: maplibregl.Map) {
   if (map.getLayer(LYR_MATCHED)) return;
 
   // has_common_code === true && start_stop_ids.length > 0 && end_stop_ids.length > 0
-  const filter: any = [
-    "all",
-    ["==", ["get", "has_common_code"], true],
-    [">", ["length", ["get", "start_stop_ids"]], 0],
-    [">", ["length", ["get", "end_stop_ids"]], 0],
-  ];
+  const filter: any = hasAdvancedSchema(map)
+    ? [
+        "all",
+        ["==", ["get", "has_common_code"], true],
+        [">", ["length", ["get", "start_stop_ids"]], 0],
+        [">", ["length", ["get", "end_stop_ids"]], 0],
+      ]
+    : undefined; // Fallback: show all features
 
   map.addLayer({
     id: LYR_MATCHED,
     type: "line",
     source: SRC_ID,
-    filter,
+    ...(filter ? { filter } : {} as any),
     paint: {
       "line-color": COLOR_MATCHED,
       "line-width": MATCHED_WIDTH_BASE as any,
@@ -163,18 +180,20 @@ function ensureOtherLayer(map: maplibregl.Map) {
   if (map.getLayer(LYR_OTHER)) return;
 
   // !(matched condition)  → either no common code OR missing start/end ids
-  const filter: any = [
-    "any",
-    ["!=", ["get", "has_common_code"], true],
-    ["<=", ["length", ["get", "start_stop_ids"]], 0],
-    ["<=", ["length", ["get", "end_stop_ids"]], 0],
-  ];
+  const filter: any = hasAdvancedSchema(map)
+    ? [
+        "any",
+        ["!=", ["get", "has_common_code"], true],
+        ["<=", ["length", ["get", "start_stop_ids"]], 0],
+        ["<=", ["length", ["get", "end_stop_ids"]], 0],
+      ]
+    : undefined; // Fallback: show all features
 
   map.addLayer({
     id: LYR_OTHER,
     type: "line",
     source: SRC_ID,
-    filter,
+    ...(filter ? { filter } : {} as any),
     paint: {
       "line-color": COLOR_OTHER,
       "line-width": OTHER_WIDTH_BASE as any,
@@ -188,11 +207,12 @@ function ensureOtherLayer(map: maplibregl.Map) {
 function ensureHighlightedLayer(map: maplibregl.Map) {
   if (map.getLayer(LYR_HILITE)) return;
 
+  const filter = hasAdvancedSchema(map) ? (FILTER_HILITE as any) : undefined;
   map.addLayer({
     id: LYR_HILITE,
     type: "line",
     source: SRC_ID,
-    filter: FILTER_HILITE as any,
+    ...(filter ? { filter } : {} as any),
     paint: {
       "line-color": HIGHLIGHT_COLOR,
       "line-width": MATCHED_WIDTH_HI as any,
