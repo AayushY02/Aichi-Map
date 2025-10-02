@@ -57,6 +57,7 @@ import RailwayLegend from './components/Legend/RailwayLegend';
 import { toggleKashiwaSubdivisionsLayer } from './layers/kashiwaSubdivisionsLayer';
 import { formatElevation, toggleKashiwaElevationLayer } from './layers/kashiwaElevationLayer';
 import KashiwaElevationLegend from './components/Legend/KashiwaElevationLegend';
+import PopulationMeshLegend from './components/Legend/PopulationMeshLegend';
 import { toggleChibaRoadsLayer } from './layers/chibaRoadsLayer';
 import ChibaRoadsLegend from './components/Legend/ChibaRoadsLegend';
 import { DEFAULT_FREQ_STYLE, FreqStyleConfig, FrequencyDay, toggleBusRoutesFrequencyLayer, updateBusRoutesFrequencyDay, updateBusRoutesFrequencyStyle } from './layers/BusFrequencyLayer';
@@ -2087,6 +2088,8 @@ export default function MapView() {
     const hasAnyRailLegend =
         railLinesVisible || railStationsVisible || stationPassengersVisible;
 
+    const hasAnyMeshLegend = meshVisible; // population mesh legend
+
     const hasAnyLegend =
         hasAnyBusLegend ||
         hasAnyFacilities ||
@@ -2102,6 +2105,7 @@ export default function MapView() {
         cityMaskVisible ||
         elevationGridVisible ||
         chibaRoadsVisible ||
+        hasAnyMeshLegend ||
         busRoutesFrequencyVisible;
 
 
@@ -2412,7 +2416,7 @@ export default function MapView() {
                         )}
                     </>
                 }
-                visible={hasAnyBusLegend || hasAnyFacilities || hasAnyKashiwakuru || hasAnyShops || hasAnyOdLegend || hasAnyChomeLegend || odGridVisible || hasAnyBusCoverage || cityMaskVisible || hasAnyBusRoutesLegend || facilityLegendOpen || shopLegendOpen || hasAnyRailLegend || chibaRoadsVisible || elevationGridVisible || busRoutesFrequencyVisible} width="w-80">
+                visible={hasAnyBusLegend || hasAnyFacilities || hasAnyKashiwakuru || hasAnyShops || hasAnyOdLegend || hasAnyChomeLegend || odGridVisible || hasAnyBusCoverage || cityMaskVisible || hasAnyBusRoutesLegend || facilityLegendOpen || shopLegendOpen || hasAnyRailLegend || chibaRoadsVisible || elevationGridVisible || hasAnyMeshLegend || busRoutesFrequencyVisible} width="w-80">
                 <AnimatePresence mode="popLayout">
 
                     {hasAnyBusLegend && (
@@ -2695,6 +2699,20 @@ export default function MapView() {
                                 onExport={handleExport}
                                 onZoomToCoverage={zoomToCoverage}
                             />
+                        </motion.div>
+                    )}
+
+                    {hasAnyMeshLegend && (
+                        <motion.div
+                            key="legend-mesh-population"
+                            layout
+                            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                            transition={{ duration: 0.25, ease: "easeOut" }}
+                            className="w-full"
+                        >
+                            <PopulationMeshLegend className="w-full" selectedMetric={selectedMetric} />
                         </motion.div>
                     )}
 
